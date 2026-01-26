@@ -1,0 +1,16 @@
+Metric,Value
+Scenario Description,Urban area with moderate grid instability
+Weekly Outage Frequency,4
+Average Outage Duration (hours),4.5
+Monthly Energy Not Served (kWh),89.8
+System Reliability (%),89.8%
+Energy Availability Factor,0.880
+Average VoLL (₦/kWh),₦595
+Total Monthly Economic Impact (₦),"₦63,269"
+Direct Energy Cost (₦),"₦9,876"
+Indirect VoLL Cost (₦),"₦53,393"
+Generator Alternative Cost (₦),"₦43,545"
+Hybrid System Monthly Cost (₦),"₦123,099"
+Annual Economic Impact (₦),"₦759,226"
+Impact as % of Income,42.2%
+Recommended Action Threshold,"₦63,269/month"
