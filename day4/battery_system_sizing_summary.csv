@@ -1,0 +1,15 @@
+Parameter,Value
+Blackout Duration,8 hours
+Battery Chemistry,LiFePO4
+Total Battery Capacity (kWh),0.89
+Usable Capacity (kWh),0.80
+Depth of Discharge (%),90
+Battery Voltage (V),48
+Battery Capacity (Ah),19
+Round-trip Efficiency (%),95
+Inverter Efficiency (%),96
+Peak Critical Load (kW),0.07
+Recommended Inverter (kW),1
+Total System Cost (₦),"₦900,467"
+Final SOC After 8h (%),34.4
+Capacity Utilization (%),65.6
