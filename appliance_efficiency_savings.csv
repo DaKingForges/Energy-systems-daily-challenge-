@@ -1,0 +1,8 @@
+appliance,old_power_w,new_power_w,power_reduction_percent,old_annual_kwh,new_annual_kwh,annual_energy_savings_kwh,annual_cost_savings_year1_ngn,upgrade_cost_ngn,simple_payback_years,maintenance_savings_annual_ngn,old_lifetime_years,new_lifetime_years,daily_usage_hours,notes
+Refrigerator,180,90,50.0,630.7200000000001,315.36000000000007,315.36000000000007,34689.600000000006,130000,3.7475208708085415,-100.0,10,15,9.600000000000001,Most critical appliance for efficiency upgrade
+Air Conditioner,1500,1000,33.33333333333333,2737.5,1825.0,912.5,100375.0,170000,1.6936488169364883,100.0,8,12,5.0,Highest impact upgrade due to high power consumption
+LED Lighting (Whole House),400,40,90.0,876.0,87.6,788.4,86724.0,10000,0.11530833448641668,-50.0,1,5,6.0,"Quickest payback, easiest upgrade"
+Television,120,60,50.0,175.2,87.6,87.6,9636.0,70000,7.264425072644251,100.0,7,10,4.0,"Moderate savings, improved picture quality"
+Washing Machine,500,300,40.0,91.25,54.75,36.5,4015.0,100000,24.906600249066003,200.0,10,15,0.5,Water savings additional benefit
+Electric Kettle,1500,1200,20.0,136.875,109.5,27.375,3011.25,5000,1.6604400166044002,0.0,3,5,0.25,Small but frequent use appliance
+Ceiling Fans (x4),240,160,33.33333333333333,1051.2,700.8,350.4000000000001,38544.00000000001,20000,0.5188875051888749,200.0,8,15,12.0,"Multiple units, significant cumulative savings"

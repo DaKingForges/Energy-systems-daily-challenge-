@@ -1,0 +1,11 @@
+Parameter,Value,Payback_Years
+Electricity Tariff (₦/kWh),80.0,2.5012283259897927
+Electricity Tariff (₦/kWh),110.0,1.8201815604074105
+Electricity Tariff (₦/kWh),140.0,1.430639886976616
+Electricity Tariff (₦/kWh),170.0,1.178439137527231
+Electricity Tariff (₦/kWh),200.0,1.0018310694596262
+Usage Multiplier,0.5,3.646277178077498
+Usage Multiplier,0.75,2.4308514520516655
+Usage Multiplier,1.0,1.823138589038749
+Usage Multiplier,1.25,1.458510871230999
+Usage Multiplier,1.5,1.2154257260258328
