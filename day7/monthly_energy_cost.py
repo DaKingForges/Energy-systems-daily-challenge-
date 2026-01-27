@@ -319,20 +319,20 @@ def create_cost_breakdown_dashboard(breakdown, scenario_name, energy_sources):
     colors = ['#3498DB', '#E74C3C', '#2C3E50', '#7F8C8D']
     
     bars3 = ax3.bar(cost_labels, cost_per_kwh, color=colors)
-    ax3.set_ylabel('Cost per kWh (₦)', fontweight='bold')
+    ax3.set_ylabel('Cost per kWh (NGN)', fontweight='bold')
     ax3.set_title('Cost Efficiency Comparison', fontweight='bold', pad=10)
     ax3.grid(True, alpha=0.3, axis='y')
     
     for bar, cost in zip(bars3, cost_per_kwh):
         height = bar.get_height()
         ax3.text(bar.get_x() + bar.get_width()/2., height + 5,
-                f'₦{cost:.0f}', ha='center', va='bottom', fontweight='bold')
+                f'NGN{cost:.0f}', ha='center', va='bottom', fontweight='bold')
     
     # 4. Monthly Cash Flow Breakdown
     ax4 = fig.add_subplot(gs[1, 1])
     
     cash_labels = list(breakdown['cash_flow']['components'].keys())
-    cash_values = [v/1000 for v in breakdown['cash_flow']['components'].values()]  # Convert to ₦K
+    cash_values = [v/1000 for v in breakdown['cash_flow']['components'].values()]  # Convert to NGN Thousands
     
     # Clean up labels for display
     display_labels = []
@@ -346,14 +346,14 @@ def create_cost_breakdown_dashboard(breakdown, scenario_name, energy_sources):
     
     bars4 = ax4.bar(display_labels, cash_values, 
                     color=['#3498DB', '#E74C3C', '#E67E22', '#F39C12', '#2ECC71', '#9B59B6'])
-    ax4.set_ylabel('Monthly Payment (₦ Thousands)', fontweight='bold')
+    ax4.set_ylabel('Monthly Payment (NGN Thousands)', fontweight='bold')
     ax4.set_title('Monthly Cash Outflow Breakdown', fontweight='bold', pad=10)
     ax4.grid(True, alpha=0.3, axis='y')
     
     for i, (bar, val) in enumerate(zip(bars4, cash_values)):
         height = bar.get_height()
         ax4.text(bar.get_x() + bar.get_width()/2., height + 0.5,
-                f'₦{val:.0f}K', ha='center', va='bottom', fontweight='bold', fontsize=9)
+                f'NGN{val:.0f}K', ha='center', va='bottom', fontweight='bold', fontsize=9)
     
     # Clean scenario name for filename
     clean_scenario_name = scenario_name.replace(":", "").replace("+", "and").replace(" ", "_").lower()
@@ -383,10 +383,10 @@ SCENARIO SUMMARY: {scenario_name}
 
 MONTHLY TOTALS:
 • Energy Consumption: {breakdown['monthly_energy_kwh']:,.0f} kWh
-• Total Net Cost: ₦{breakdown['total_costs']['total_net_cost_ngn']:,.0f}
-• Cash Outflow: ₦{breakdown['cash_flow']['monthly_outflow_ngn']:,.0f}
-• Cost per kWh: ₦{breakdown['unit_costs']['cost_per_kwh_total']:.0f}
-• Annual Energy Budget: ₦{breakdown['total_costs']['total_net_cost_ngn'] * 12:,.0f}
+• Total Net Cost: NGN{breakdown['total_costs']['total_net_cost_ngn']:,.0f}
+• Cash Outflow: NGN{breakdown['cash_flow']['monthly_outflow_ngn']:,.0f}
+• Cost per kWh: NGN{breakdown['unit_costs']['cost_per_kwh_total']:.0f}
+• Annual Energy Budget: NGN{breakdown['total_costs']['total_net_cost_ngn'] * 12:,.0f}
 
 ENERGY MIX:
 • Grid: {breakdown['energy_by_source']['grid_kwh']:.0f} kWh ({breakdown['efficiency_metrics']['energy_mix_percent']['grid_percent']}%)
@@ -395,46 +395,46 @@ ENERGY MIX:
 • Battery: {breakdown['energy_by_source']['battery_kwh']:.0f} kWh ({breakdown['efficiency_metrics']['energy_mix_percent']['battery_percent']}%)
 
 COST BREAKDOWN:
-• Grid: ₦{breakdown['costs_by_source']['grid_ngn']:,.0f} ({breakdown['percentages'].get('grid', 0):.1f}%)
-• Generator: ₦{breakdown['costs_by_source']['generator_ngn']:,.0f} ({breakdown['percentages'].get('generator', 0):.1f}%)
-• Solar (Net): ₦{breakdown['costs_by_source']['solar_ngn']:,.0f} ({breakdown['percentages'].get('solar_net', 0):.1f}%)
-• Battery: ₦{breakdown['costs_by_source']['battery_ngn']:,.0f} ({breakdown['percentages'].get('battery', 0):.1f}%)
-• Efficiency: ₦{breakdown['costs_by_source']['efficiency_ngn']:,.0f} ({breakdown['percentages'].get('efficiency_net', 0):.1f}%)
+• Grid: NGN{breakdown['costs_by_source']['grid_ngn']:,.0f} ({breakdown['percentages'].get('grid', 0):.1f}%)
+• Generator: NGN{breakdown['costs_by_source']['generator_ngn']:,.0f} ({breakdown['percentages'].get('generator', 0):.1f}%)
+• Solar (Net): NGN{breakdown['costs_by_source']['solar_ngn']:,.0f} ({breakdown['percentages'].get('solar_net', 0):.1f}%)
+• Battery: NGN{breakdown['costs_by_source']['battery_ngn']:,.0f} ({breakdown['percentages'].get('battery', 0):.1f}%)
+• Efficiency: NGN{breakdown['costs_by_source']['efficiency_ngn']:,.0f} ({breakdown['percentages'].get('efficiency_net', 0):.1f}%)
 
 RELIABILITY METRICS:
 • Outage Hours: {breakdown['efficiency_metrics']['outage_hours_monthly']:.0f} hrs/month
 • Reliability: {breakdown['efficiency_metrics']['reliability_percent']:.1f}%
-• Outage Cost per Hour: ~₦{(breakdown['total_costs']['total_net_cost_ngn'] / 730 * (breakdown['efficiency_metrics']['outage_hours_monthly'] / 30)):.0f}
+• Outage Cost per Hour: ~NGN{(breakdown['total_costs']['total_net_cost_ngn'] / 730 * (breakdown['efficiency_metrics']['outage_hours_monthly'] / 30)):.0f}
 
 COST EFFICIENCY:
-• Grid Tariff: ₦{breakdown['unit_costs']['grid_tariff']}/kWh
-• Generator Cost: ₦{breakdown['unit_costs']['generator_cost_per_kwh']}/kWh
-• Scenario Average: ₦{breakdown['unit_costs']['cost_per_kwh_total']:.0f}/kWh
-• Energy Only Cost: ₦{breakdown['unit_costs']['cost_per_kwh_energy_only']:.0f}/kWh (excluding capital)
+• Grid Tariff: NGN{breakdown['unit_costs']['grid_tariff']}/kWh
+• Generator Cost: NGN{breakdown['unit_costs']['generator_cost_per_kwh']}/kWh
+• Scenario Average: NGN{breakdown['unit_costs']['cost_per_kwh_total']:.0f}/kWh
+• Energy Only Cost: NGN{breakdown['unit_costs']['cost_per_kwh_energy_only']:.0f}/kWh (excluding capital)
 
 CASH FLOW DETAILS:
-• Grid Bill: ₦{breakdown['cash_flow']['components']['grid_bill']:,.0f}
-• Generator Fuel: ₦{breakdown['cash_flow']['components']['generator_fuel']:,.0f}
-• Generator Maintenance: ₦{breakdown['cash_flow']['components']['generator_maintenance']:,.0f}
-• Solar Loan: ₦{breakdown['cash_flow']['components']['solar_loan']:,.0f}
-• Battery Loan: ₦{breakdown['cash_flow']['components']['battery_loan']:,.0f}
-• Efficiency Loan: ₦{breakdown['cash_flow']['components']['efficiency_loan']:,.0f}
+• Grid Bill: NGN{breakdown['cash_flow']['components']['grid_bill']:,.0f}
+• Generator Fuel: NGN{breakdown['cash_flow']['components']['generator_fuel']:,.0f}
+• Generator Maintenance: NGN{breakdown['cash_flow']['components']['generator_maintenance']:,.0f}
+• Solar Loan: NGN{breakdown['cash_flow']['components']['solar_loan']:,.0f}
+• Battery Loan: NGN{breakdown['cash_flow']['components']['battery_loan']:,.0f}
+• Efficiency Loan: NGN{breakdown['cash_flow']['components']['efficiency_loan']:,.0f}
 
 KEY INSIGHTS:
 • Largest Cost Component: {max(breakdown['percentages'], key=breakdown['percentages'].get).upper()} at {breakdown['percentages'][max(breakdown['percentages'], key=breakdown['percentages'].get)]:.1f}%
 • Generator vs Grid: Generator costs are {breakdown['costs_by_source']['generator_ngn']/breakdown['costs_by_source']['grid_ngn']:.1f}x grid costs
 • Renewable Share: {breakdown['percentages'].get('solar_net', 0) + breakdown['percentages'].get('battery', 0):.1f}% of total costs
-• Monthly Savings: ₦{breakdown['total_costs']['total_savings_ngn']:,.0f} from solar and efficiency
+• Monthly Savings: NGN{breakdown['total_costs']['total_savings_ngn']:,.0f} from solar and efficiency
 
 BUDGETING RECOMMENDATIONS:
-• Fixed Monthly Allocation: ₦{breakdown['cash_flow']['monthly_outflow_ngn'] * 1.1:,.0f} (with 10% buffer)
-• Variable Cost Buffer: ₦{breakdown['total_costs']['total_energy_cost_ngn'] * 0.15:,.0f} for tariff increases
-• Maintenance Reserve: ₦{breakdown['cash_flow']['components']['generator_maintenance'] * 3:,.0f} quarterly
-• Emergency Fund: ₦{breakdown['total_costs']['total_net_cost_ngn'] * 2:,.0f} for unexpected outages
+• Fixed Monthly Allocation: NGN{breakdown['cash_flow']['monthly_outflow_ngn'] * 1.1:,.0f} (with 10% buffer)
+• Variable Cost Buffer: NGN{breakdown['total_costs']['total_energy_cost_ngn'] * 0.15:,.0f} for tariff increases
+• Maintenance Reserve: NGN{breakdown['cash_flow']['components']['generator_maintenance'] * 3:,.0f} quarterly
+• Emergency Fund: NGN{breakdown['total_costs']['total_net_cost_ngn'] * 2:,.0f} for unexpected outages
 
 OPTIMIZATION OPPORTUNITIES:
-• Reduce Generator Use: Each kWh saved from generator saves ₦{breakdown['unit_costs']['generator_cost_per_kwh'] - breakdown['unit_costs']['grid_tariff']} vs grid
-• Increase Solar Self-Consumption: Each additional solar kWh self-consumed saves ₦{breakdown['unit_costs']['grid_tariff']}
+• Reduce Generator Use: Each kWh saved from generator saves NGN{breakdown['unit_costs']['generator_cost_per_kwh'] - breakdown['unit_costs']['grid_tariff']} vs grid
+• Increase Solar Self-Consumption: Each additional solar kWh self-consumed saves NGN{breakdown['unit_costs']['grid_tariff']}
 • Load Shifting: Move loads to solar hours to maximize self-consumption
 """
     
@@ -470,7 +470,7 @@ def create_scenario_comparison_chart(energy_sources):
     
     bars1 = ax1.bar(range(len(scenario_names)), total_costs, 
                    color=['#E74C3C', '#F39C12', '#2ECC71', '#3498DB'])
-    ax1.set_ylabel('Total Monthly Cost (₦ Thousands)', fontweight='bold')
+    ax1.set_ylabel('Total Monthly Cost (NGN Thousands)', fontweight='bold')
     ax1.set_title('Total Cost Comparison Across Scenarios', fontweight='bold', pad=10)
     ax1.set_xticks(range(len(scenario_names)))
     ax1.set_xticklabels(scenario_names, rotation=45, ha='right')
@@ -479,7 +479,7 @@ def create_scenario_comparison_chart(energy_sources):
     for i, (bar, cost) in enumerate(zip(bars1, total_costs)):
         height = bar.get_height()
         ax1.text(bar.get_x() + bar.get_width()/2., height + 2,
-                f'₦{cost:.0f}K', ha='center', va='bottom', fontweight='bold')
+                f'NGN{cost:.0f}K', ha='center', va='bottom', fontweight='bold')
     
     # 2. Cost per kWh Comparison
     costs_per_kwh = [b['unit_costs']['cost_per_kwh_total'] for b in all_breakdowns.values()]
@@ -488,9 +488,9 @@ def create_scenario_comparison_chart(energy_sources):
     
     bars2 = ax2.bar(range(len(scenario_names)), costs_per_kwh, 
                    color=['#E74C3C', '#F39C12', '#2ECC71', '#3498DB'])
-    ax2.plot(range(len(scenario_names)), grid_line, '--', color='#3498DB', linewidth=2, label='Grid Tariff (₦110)')
-    ax2.plot(range(len(scenario_names)), generator_line, '--', color='#E74C3C', linewidth=2, label='Generator (₦485)')
-    ax2.set_ylabel('Cost per kWh (₦)', fontweight='bold')
+    ax2.plot(range(len(scenario_names)), grid_line, '--', color='#3498DB', linewidth=2, label='Grid Tariff (NGN110)')
+    ax2.plot(range(len(scenario_names)), generator_line, '--', color='#E74C3C', linewidth=2, label='Generator (NGN485)')
+    ax2.set_ylabel('Cost per kWh (NGN)', fontweight='bold')
     ax2.set_title('Cost Efficiency Comparison', fontweight='bold', pad=10)
     ax2.set_xticks(range(len(scenario_names)))
     ax2.set_xticklabels(scenario_names, rotation=45, ha='right')
@@ -500,7 +500,7 @@ def create_scenario_comparison_chart(energy_sources):
     for i, (bar, cost) in enumerate(zip(bars2, costs_per_kwh)):
         height = bar.get_height()
         ax2.text(bar.get_x() + bar.get_width()/2., height + 5,
-                f'₦{cost:.0f}', ha='center', va='bottom', fontweight='bold')
+                f'NGN{cost:.0f}', ha='center', va='bottom', fontweight='bold')
     
     # 3. Energy Mix Comparison (Stacked Bar)
     ax3.set_ylabel('Energy Mix Percentage (%)', fontweight='bold')
@@ -534,7 +534,7 @@ def create_scenario_comparison_chart(energy_sources):
     
     bars4 = ax4.bar(range(len(scenario_names)), cash_outflows,
                    color=['#E74C3C', '#F39C12', '#2ECC71', '#3498DB'])
-    ax4.set_ylabel('Monthly Cash Outflow (₦ Thousands)', fontweight='bold')
+    ax4.set_ylabel('Monthly Cash Outflow (NGN Thousands)', fontweight='bold')
     ax4.set_title('Actual Monthly Payments Comparison', fontweight='bold', pad=10)
     ax4.set_xticks(range(len(scenario_names)))
     ax4.set_xticklabels(scenario_names, rotation=45, ha='right')
@@ -543,7 +543,7 @@ def create_scenario_comparison_chart(energy_sources):
     for i, (bar, cash) in enumerate(zip(bars4, cash_outflows)):
         height = bar.get_height()
         ax4.text(bar.get_x() + bar.get_width()/2., height + 1,
-                f'₦{cash:.0f}K', ha='center', va='bottom', fontweight='bold')
+                f'NGN{cash:.0f}K', ha='center', va='bottom', fontweight='bold')
     
     plt.suptitle('Energy Cost Scenario Comparison Analysis\nPortfolio Days 1-7 Integration', 
                 fontsize=14, fontweight='bold', y=0.98)
@@ -593,13 +593,13 @@ def analyze_cost_drivers(breakdown):
         "cost_structure": {
             "variable_costs_ngn": variable_costs,
             "fixed_costs_ngn": fixed_costs,
-            "variable_percent": (variable_costs / total_costs) * 100,
-            "fixed_percent": (fixed_costs / total_costs) * 100
+            "variable_percent": (variable_costs / total_costs) * 100 if total_costs > 0 else 0,
+            "fixed_percent": (fixed_costs / total_costs) * 100 if total_costs > 0 else 0
         },
         "biggest_driver": {
             "component": max_component,
             "cost_ngn": max_value,
-            "percentage": (max_value / total_costs) * 100
+            "percentage": (max_value / total_costs) * 100 if total_costs > 0 else 0
         },
         "sensitivity": {
             "per_10pct_usage_increase_ngn": total_sensitivity,
@@ -623,7 +623,7 @@ def analyze_cost_drivers(breakdown):
         drivers["optimization_recommendations"].append("Generator costs exceed grid costs - prioritize solar/battery to reduce generator use")
     
     if breakdown['unit_costs']['cost_per_kwh_total'] > 200:
-        drivers["optimization_recommendations"].append("Total cost per kWh is high (>₦200) - consider efficiency improvements")
+        drivers["optimization_recommendations"].append("Total cost per kWh is high (>NGN200) - consider efficiency improvements")
     
     return drivers
 
@@ -679,7 +679,7 @@ def export_analysis_results(breakdown, cost_drivers, scenario_name):
     
     df_cost = pd.DataFrame(cost_table)
     cost_filename = f'energy_cost_breakdown_{clean_scenario_name}.csv'
-    df_cost.to_csv(cost_filename, index=False)
+    df_cost.to_csv(cost_filename, index=False, encoding='utf-8')
     print(f"✓ Cost breakdown saved as: {cost_filename}")
     
     # Energy source table
@@ -708,18 +708,18 @@ def export_analysis_results(breakdown, cost_drivers, scenario_name):
     
     df_energy = pd.DataFrame(energy_table)
     energy_filename = f'energy_source_analysis_{clean_scenario_name}.csv'
-    df_energy.to_csv(energy_filename, index=False)
+    df_energy.to_csv(energy_filename, index=False, encoding='utf-8')
     print(f"✓ Energy source analysis saved as: {energy_filename}")
     
     # Create a summary text file
     summary_filename = f'energy_analysis_summary_{clean_scenario_name}.txt'
-    with open(summary_filename, 'w') as f:
+    with open(summary_filename, 'w', encoding='utf-8') as f:
         f.write(f"Energy Cost Analysis Summary - {scenario_name}\n")
         f.write("=" * 60 + "\n\n")
-        f.write(f"Total Monthly Cost: ₦{breakdown['total_costs']['total_net_cost_ngn']:,.0f}\n")
-        f.write(f"Cost per kWh: ₦{breakdown['unit_costs']['cost_per_kwh_total']:.0f}\n")
-        f.write(f"Monthly Cash Outflow: ₦{breakdown['cash_flow']['monthly_outflow_ngn']:,.0f}\n")
-        f.write(f"Annual Budget: ₦{breakdown['total_costs']['total_net_cost_ngn'] * 12:,.0f}\n\n")
+        f.write(f"Total Monthly Cost: NGN{breakdown['total_costs']['total_net_cost_ngn']:,.0f}\n")
+        f.write(f"Cost per kWh: NGN{breakdown['unit_costs']['cost_per_kwh_total']:.0f}\n")
+        f.write(f"Monthly Cash Outflow: NGN{breakdown['cash_flow']['monthly_outflow_ngn']:,.0f}\n")
+        f.write(f"Annual Budget: NGN{breakdown['total_costs']['total_net_cost_ngn'] * 12:,.0f}\n\n")
         f.write("Biggest Cost Driver:\n")
         f.write(f"  - {cost_drivers['biggest_driver']['component']}: {cost_drivers['biggest_driver']['percentage']:.1f}%\n\n")
         f.write("Optimization Recommendations:\n")
@@ -749,10 +749,10 @@ def main():
     # Step 1: Define energy sources
     print("\n1. DEFINING ENERGY SOURCES & COSTS...")
     energy_sources = define_energy_sources()
-    print(f"   • Grid Tariff: ₦{energy_sources['grid']['tariff_per_kwh']}/kWh")
-    print(f"   • Generator Cost: ₦{energy_sources['generator']['cost_per_kwh']}/kWh (incl. capital)")
-    print(f"   • Solar Amortized: ₦{energy_sources['solar_pv']['amortized_cost_monthly']:,.0f}/month")
-    print(f"   • Battery Amortized: ₦{energy_sources['battery_storage']['amortized_cost_monthly']:,.0f}/month")
+    print(f"   • Grid Tariff: NGN{energy_sources['grid']['tariff_per_kwh']}/kWh")
+    print(f"   • Generator Cost: NGN{energy_sources['generator']['cost_per_kwh']}/kWh (incl. capital)")
+    print(f"   • Solar Amortized: NGN{energy_sources['solar_pv']['amortized_cost_monthly']:,.0f}/month")
+    print(f"   • Battery Amortized: NGN{energy_sources['battery_storage']['amortized_cost_monthly']:,.0f}/month")
     
     # Step 2: Define usage scenarios
     print("\n2. DEFINING USAGE SCENARIOS...")
@@ -767,9 +767,9 @@ def main():
     # Step 3: Calculate cost breakdown
     print("\n3. CALCULATING COST BREAKDOWN...")
     breakdown = calculate_cost_breakdown(selected_scenario, energy_sources)
-    print(f"   • Total Monthly Cost: ₦{breakdown['total_costs']['total_net_cost_ngn']:,.0f}")
-    print(f"   • Cost per kWh: ₦{breakdown['unit_costs']['cost_per_kwh_total']:.0f}")
-    print(f"   • Monthly Cash Outflow: ₦{breakdown['cash_flow']['monthly_outflow_ngn']:,.0f}")
+    print(f"   • Total Monthly Cost: NGN{breakdown['total_costs']['total_net_cost_ngn']:,.0f}")
+    print(f"   • Cost per kWh: NGN{breakdown['unit_costs']['cost_per_kwh_total']:.0f}")
+    print(f"   • Monthly Cash Outflow: NGN{breakdown['cash_flow']['monthly_outflow_ngn']:,.0f}")
     
     # Step 4: Analyze cost drivers
     print("\n4. ANALYZING COST DRIVERS...")
@@ -802,22 +802,22 @@ COMPREHENSIVE COST AUDIT RESULTS:
 
 1. MONTHLY FINANCIAL SUMMARY:
    • Total Energy Consumption: {breakdown['monthly_energy_kwh']:,.0f} kWh
-   • Total Monthly Cost: ₦{breakdown['total_costs']['total_net_cost_ngn']:,.0f}
-   • Cost per kWh: ₦{breakdown['unit_costs']['cost_per_kwh_total']:.0f}
-   • Monthly Cash Outflow: ₦{breakdown['cash_flow']['monthly_outflow_ngn']:,.0f}
-   • Annual Energy Budget: ₦{breakdown['total_costs']['total_net_cost_ngn'] * 12:,.0f}
+   • Total Monthly Cost: NGN{breakdown['total_costs']['total_net_cost_ngn']:,.0f}
+   • Cost per kWh: NGN{breakdown['unit_costs']['cost_per_kwh_total']:.0f}
+   • Monthly Cash Outflow: NGN{breakdown['cash_flow']['monthly_outflow_ngn']:,.0f}
+   • Annual Energy Budget: NGN{breakdown['total_costs']['total_net_cost_ngn'] * 12:,.0f}
 
 2. ENERGY SOURCE BREAKDOWN:
-   • Grid: {breakdown['energy_by_source']['grid_kwh']:.0f} kWh ({breakdown['efficiency_metrics']['energy_mix_percent']['grid_percent']}%) → ₦{breakdown['costs_by_source']['grid_ngn']:,.0f}
-   • Generator: {breakdown['energy_by_source']['generator_kwh']:.0f} kWh ({breakdown['efficiency_metrics']['energy_mix_percent']['generator_percent']}%) → ₦{breakdown['costs_by_source']['generator_ngn']:,.0f}
-   • Solar PV: {breakdown['energy_by_source']['solar_kwh']:.0f} kWh ({breakdown['efficiency_metrics']['energy_mix_percent']['solar_percent']}%) → ₦{breakdown['costs_by_source']['solar_ngn']:,.0f}
-   • Battery: {breakdown['energy_by_source']['battery_kwh']:.0f} kWh ({breakdown['efficiency_metrics']['energy_mix_percent']['battery_percent']}%) → ₦{breakdown['costs_by_source']['battery_ngn']:,.0f}
+   • Grid: {breakdown['energy_by_source']['grid_kwh']:.0f} kWh ({breakdown['efficiency_metrics']['energy_mix_percent']['grid_percent']}%) → NGN{breakdown['costs_by_source']['grid_ngn']:,.0f}
+   • Generator: {breakdown['energy_by_source']['generator_kwh']:.0f} kWh ({breakdown['efficiency_metrics']['energy_mix_percent']['generator_percent']}%) → NGN{breakdown['costs_by_source']['generator_ngn']:,.0f}
+   • Solar PV: {breakdown['energy_by_source']['solar_kwh']:.0f} kWh ({breakdown['efficiency_metrics']['energy_mix_percent']['solar_percent']}%) → NGN{breakdown['costs_by_source']['solar_ngn']:,.0f}
+   • Battery: {breakdown['energy_by_source']['battery_kwh']:.0f} kWh ({breakdown['efficiency_metrics']['energy_mix_percent']['battery_percent']}%) → NGN{breakdown['costs_by_source']['battery_ngn']:,.0f}
 
 3. COST DRIVER ANALYSIS:
    • Primary Driver: {cost_drivers['biggest_driver']['component'].upper()} → {cost_drivers['biggest_driver']['percentage']:.1f}% of total
    • Cost Structure: {cost_drivers['cost_structure']['variable_percent']:.1f}% variable, {cost_drivers['cost_structure']['fixed_percent']:.1f}% fixed
    • Grid vs Generator: Generator costs are {breakdown['costs_by_source']['generator_ngn']/breakdown['costs_by_source']['grid_ngn']:.1f}x grid costs
-   • Efficiency Impact: Efficiency upgrades save ₦{breakdown['total_costs']['total_savings_ngn']:,.0f}/month
+   • Efficiency Impact: Efficiency upgrades save NGN{breakdown['total_costs']['total_savings_ngn']:,.0f}/month
 
 4. OPTIMIZATION RECOMMENDATIONS:
 """

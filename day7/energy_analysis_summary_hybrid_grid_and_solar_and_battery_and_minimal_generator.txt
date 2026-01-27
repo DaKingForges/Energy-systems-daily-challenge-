@@ -1,3 +1,13 @@
 Energy Cost Analysis Summary - Hybrid: Grid + Solar + Battery + Minimal Generator
 ============================================================
 
+Total Monthly Cost: NGN88,954
+Cost per kWh: NGN89
+Monthly Cash Outflow: NGN155,269
+Annual Budget: NGN1,067,448
+
+Biggest Cost Driver:
+  - grid_ngn: 43.1%
+
+Optimization Recommendations:
+  - Focus on reducing energy consumption (variable costs are high)
