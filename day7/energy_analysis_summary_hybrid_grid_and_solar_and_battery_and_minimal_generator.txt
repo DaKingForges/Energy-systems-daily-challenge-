@@ -1,0 +1,3 @@
+Energy Cost Analysis Summary - Hybrid: Grid + Solar + Battery + Minimal Generator
+============================================================
+

@@ -1,0 +1,11 @@
+Cost_Category,Monthly_Cost_NGN,Percentage_of_Total
+Grid Electricity,38345.99999999999,43.1%
+Generator Fuel,24153.000000000004,27.2%
+Generator Maintenance,5000.0,5.6%
+Solar System (Amortized),4570.0,5.1%
+Battery System (Amortized),16885.0,19.0%
+Efficiency Upgrades (Amortized),0.0,0.0%
+Total Energy Cost (Grid+Gen),62499.0,70.3%
+Total Capital Cost,87770.44943081358,98.7%
+Total Net Cost,88954.0,100%
+Monthly Cash Outflow,155269.44943081358,174.6%

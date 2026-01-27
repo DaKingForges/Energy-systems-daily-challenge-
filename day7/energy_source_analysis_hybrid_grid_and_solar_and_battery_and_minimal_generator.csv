@@ -1,0 +1,5 @@
+Energy_Source,Monthly_Energy_kWh,Percentage_of_Total,Cost_per_kWh_NGN,Monthly_Cost_NGN
+Grid,348.59999999999997,35.0%,110,38345.99999999999
+Generator,49.800000000000004,5.0%,485,29153.000000000004
+Solar PV,498.0,50.0%,Amortized,4570.0
+Battery Storage,99.60000000000001,10.0%,Amortized,16885.0
