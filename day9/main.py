@@ -510,7 +510,7 @@ def calculate_break_even(generator_costs, solar_costs, scenario):
     }
 
 # ============================================================================
-# 5. DECISION DASHBOARD VISUALIZATION
+# 5. DECISION DASHBOARD VISUALIZATION (Corrected Version)
 # ============================================================================
 
 def create_decision_dashboard(scenario, generator_costs, solar_costs, break_even_results):
@@ -737,7 +737,7 @@ def create_decision_dashboard(scenario, generator_costs, solar_costs, break_even
         ax6.text(bar.get_x() + bar.get_width()/2, height * 1.05,
                 f'{value:,.0f} {unit}', ha='center', va='bottom', fontsize=8)
     
-    # 7. Monthly Cash Flow Comparison
+    # 7. Monthly Cash Flow Comparison (Corrected Section)
     ax7 = fig.add_subplot(gs[2, 0])
     
     # Calculate monthly costs
@@ -764,6 +764,7 @@ def create_decision_dashboard(scenario, generator_costs, solar_costs, break_even
                               ((1 + monthly_rate) ** num_payments - 1)
     else:
         monthly_loan_payment = 0
+        loan_term = 0  # Added default value
     
     monthly_solar_maintenance = (scenario['solar_option']['capital_cost']['total_capex'] * 
                                 (scenario['solar_option']['operational_costs']['annual_maintenance_percent']/100)) / 12
@@ -778,6 +779,7 @@ def create_decision_dashboard(scenario, generator_costs, solar_costs, break_even
     gen_monthly = monthly_generator * ((1 + scenario['financial_parameters']['fuel_price_escalation']/12) ** (x_months-1))
     
     # Solar cost: loan payments for first loan_term years, then just maintenance
+    # FIX: Using list comprehension
     sol_monthly = []
     for month in months:
         if month <= loan_term * 12:
@@ -785,14 +787,17 @@ def create_decision_dashboard(scenario, generator_costs, solar_costs, break_even
         else:
             sol_monthly.append(monthly_solar_maintenance - monthly_energy_value)
     
+    # Convert to numpy array to allow division
+    sol_monthly_np = np.array(sol_monthly)
+    
     ax7.plot(x_months, gen_monthly/1000, color='#E74C3C', linewidth=1.5, 
              label='Generator Net Cost')
-    ax7.plot(x_months, sol_monthly/1000, color='#2ECC71', linewidth=1.5, 
+    ax7.plot(x_months, sol_monthly_np/1000, color='#2ECC71', linewidth=1.5,  # Using numpy array
              label='Solar Net Cost')
     
     # Highlight when solar becomes cheaper
     for month in range(1, 121):
-        if sol_monthly[month-1] < gen_monthly[month-1]:
+        if sol_monthly_np[month-1] < gen_monthly[month-1]:
             ax7.axvline(x=month, color='#F39C12', linestyle='--', alpha=0.3, linewidth=0.5)
             break
     
@@ -883,7 +888,7 @@ def create_decision_dashboard(scenario, generator_costs, solar_costs, break_even
     plt.show()
     
     return fig
-
+    
 # ============================================================================
 # 6. FINAL DECISION & RECOMMENDATION
 # ============================================================================
