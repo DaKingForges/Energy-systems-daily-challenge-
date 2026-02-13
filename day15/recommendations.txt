@@ -1,0 +1,48 @@
+
+RURAL ELECTRIFICATION SCENARIO - RECOMMENDATIONS
+================================================
+
+Community: 75 households + school + health center + market
+Daily energy demand: 173 kWh
+Peak load: 18.6 kW
+
+COMPARISON SUMMARY:
+-------------------
+         Option  CAPEX (₦M)  Total Lifecycle Cost (₦M)  LCOE (₦/kWh)  Reliability (%)  CO₂ (tonnes/yr)
+ Grid Extension       170.0                      247.3         196.0             65.0             53.7
+Solar + Battery        88.5                      139.4         110.0             86.4             18.4
+    Solar + PHS        56.5                       71.3          56.0             95.4              6.2
+
+KEY FINDINGS:
+-------------
+- Most reliable: Solar + PHS (95.4%)
+- Lowest LCOE: Solar + PHS (₦56/kWh)
+- Lowest CO₂: Solar + PHS (6.2 tonnes/yr)
+
+RECOMMENDATION:
+---------------
+Based on the analysis, the recommended solution is:
+
+SOLAR + PUMPED HYDRO STORAGE (PHS) MINI-GRID
+
+Why: It provides very low LCOE, zero emissions, and long asset life. If suitable topography exists, PHS avoids battery replacement costs and offers durable storage.
+ADDITIONAL INSIGHTS:
+--------------------
+- **Feasibility:** Solar+battery is easiest to deploy anywhere; PHS requires specific terrain.
+- **Scalability:** Both mini-grids can be expanded with additional solar panels.
+- **Community acceptance:** Solar+battery is well understood; PHS may need education.
+- **Maintenance:** Battery needs replacement every 10 years; PHS has minimal maintenance but civil works monitoring.
+
+NEXT STEPS:
+-----------
+1. Conduct site survey for PHS feasibility.
+2. Perform detailed financial analysis with actual quotes.
+3. Engage community for load validation and willingness-to-pay.
+4. Apply for rural electrification funding (REA, World Bank).
+
+PORTFOLIO VALUE STATEMENT:
+--------------------------
+'Simulated rural electrification scenarios for a 75‑household community with community loads,
+comparing grid extension, solar+battery mini-grid, and solar+PHS mini-grid. The analysis
+incorporated load profiling, system sizing, hourly simulation, lifecycle cost, and CO₂ emissions.
+Recommended the optimal solution based on reliability, cost, and sustainability.'

@@ -1,0 +1,56 @@
+PUMPED HYDRO STORAGE (PHS) SIMULATION - RECOMMENDATIONS
+========================================================
+
+Based on the 24‑hour simulation of a 400 kWh / 50 kW PHS system supporting a 
+30‑household rural microgrid with 100 kWp solar PV, the following insights 
+and recommendations are made:
+
+1. SYSTEM PERFORMANCE
+   -------------------
+   - The PHS supplied 250 kWh of the evening/night load, covering 28% of 
+     total daily demand.
+   - Peak demand was reduced from 78.6 kW to 52.4 kW (33% reduction), 
+     enabling a smaller, cheaper diesel generator or grid connection.
+   - Round‑trip efficiency of 80% is in line with typical small‑scale PHS.
+
+2. TECHNICAL RECOMMENDATIONS
+   --------------------------
+   - Increase reservoir capacity to 500 kWh to store more of the excess solar 
+     and further reduce unmet load (currently 238 kWh/day still needs backup).
+   - Consider adding a small battery (e.g., 50 kWh) for faster response and 
+     to cover short peaks that exceed turbine ramp rates.
+   - Install a variable‑speed pump/turbine to improve part‑load efficiency.
+
+3. ECONOMIC CONSIDERATIONS
+   ------------------------
+   - PHS has very long lifetime (>50 years) and low O&M, making it attractive 
+     despite higher upfront civil works cost.
+   - For this scale, estimated CAPEX: ₦45M (₦150k/kW turbine + ₦40k/kWh storage).
+   - With 250 kWh/day diesel displacement (at ₦485/kWh generator LCOE), 
+     annual fuel savings ≈ ₦44M → simple payback ~1 year (excluding civil works).
+   - Detailed financial analysis should include site‑specific civil costs.
+
+4. SITING REQUIREMENTS
+   --------------------
+   - Suitable topography with 80 m head and water availability is essential.
+   - Conduct geological survey to ensure reservoir lining is not needed.
+   - Environmental impact assessment for stream diversion (if applicable).
+
+5. OPERATIONAL STRATEGY
+   ---------------------
+   - Implement a predictive controller using next‑day solar forecast and 
+     load pattern to optimise pumping schedule.
+   - Maintain minimum SOC (10%) to handle unexpected cloud cover.
+
+6. NEXT STEPS
+   -----------
+   - Perform a year‑long simulation with real solar irradiance and load data.
+   - Evaluate multiple reservoir sizes to find optimal cost/benefit trade‑off.
+   - Compare with battery storage for the same application.
+
+SUMMARY
+-------
+A 50 kW / 400 kWh PHS system integrated with 100 kWp solar can reduce peak 
+demand by 33% and supply 28% of daily energy, significantly cutting reliance 
+on diesel. With favourable topography, PHS offers a durable, low‑O&M storage 
+solution for rural microgrids.

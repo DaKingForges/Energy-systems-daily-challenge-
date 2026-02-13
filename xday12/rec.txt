@@ -1,0 +1,18 @@
+Original peak: 173.02 kW
+Shifted peak: 205.47 kW
+Peak reduction: -32.45 kW (-18.8%)
+
+Daily energy cost (excluding demand):
+  Original: ₦185135
+  Shifted:  ₦167133
+  Savings:  ₦18003 (9.7%)
+
+Daily demand charge (pro-rated):
+  Original: ₦28837
+  Shifted:  ₦34244
+  Savings:  ₦-5408
+
+Total daily cost (energy + demand):
+  Original: ₦213972
+  Shifted:  ₦201377
+  Savings:  ₦12595 (5.9%)

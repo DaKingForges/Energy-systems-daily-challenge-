@@ -1,15 +1,12 @@
 """
-DAY 8: Mini-Grid Design Decision Analysis
+DAY 8: Mini-Grid Design Decision Analysis - TWO IMAGE VERSION
 Energy System Management Portfolio - Week 2: System Design & Decision-Making
 
-Decision Question: What is the optimal generation mix for a 20-household rural 
-mini-grid in Northern Nigeria to meet energy demands reliably at lowest cost?
+This code creates TWO SEPARATE IMAGES:
+1. Image 1: Technical & Economic Charts Only
+2. Image 2: Decision Analysis Summary
 
-Constraints: 
-- Must serve 20 rural households with limited grid access
-- Must achieve >95% reliability
-- Must be economically viable for community ownership
-- Must consider seasonal variations (dry vs rainy season)
+Run this complete script to generate both images.
 """
 
 import pandas as pd
@@ -227,7 +224,6 @@ def design_solar_generator_option(df_load, daily_energy_kwh):
         solar_profile[hour] = normalized * solar_size_kw * solar_params['peak_sun_hours'] / 6
     
     # Generator sizing: must cover peak load when solar is unavailable
-    # Create a proper night hours list (7 PM to 6 AM)
     night_hours = list(range(19, 24)) + list(range(0, 7))
     peak_night_load = df_load[df_load['Hour'].isin(night_hours)]['Total_MiniGrid_kW'].max()
     generator_size_kw = peak_night_load * 1.3  # 30% margin
@@ -235,23 +231,18 @@ def design_solar_generator_option(df_load, daily_energy_kwh):
     # Typical mini-grid generator sizes: 20, 30, 50 kVA
     standard_sizes = [20, 30, 50, 75, 100]  # kVA
     
-    # FIXED: Proper generator selection with fallback
+    # Generator selection
     required_kva = generator_size_kw / 0.8  # Assume 0.8 PF
-    
-    # Find appropriate generator size
     suitable_sizes = [s for s in standard_sizes if s >= required_kva]
     
     if suitable_sizes:
         generator_kva = min(suitable_sizes)
     else:
-        # If no standard size is large enough, use the largest available
         generator_kva = standard_sizes[-1]
-        print(f"Warning: Required generator size {required_kva:.1f} kVA exceeds standard sizes. Using {generator_kva} kVA.")
     
     generator_kw = generator_kva * 0.8
     
-    # Generator fuel consumption (typical diesel generator)
-    # At 50% load: ~0.25 L/kWh, at 100% load: ~0.3 L/kWh
+    # Generator fuel consumption
     fuel_consumption_lph = 0.28 * generator_kw  # Liters per hour at rated load
     
     # Simulate operation: generator runs when solar insufficient
@@ -266,7 +257,6 @@ def design_solar_generator_option(df_load, daily_energy_kwh):
     generator_output = [0] * 24
     fuel_used = [0] * 24
     
-    # Simple dispatch: generator runs when net load > 30% of generator capacity
     min_generator_load = 0.3 * generator_kw  # Minimum efficient load
     
     for i, row in df_balance.iterrows():
@@ -278,8 +268,7 @@ def design_solar_generator_option(df_load, daily_energy_kwh):
             generator_output[i] = min(net_load, generator_kw)
             fuel_used[i] = (generator_output[i] / generator_kw) * fuel_consumption_lph
         elif net_load > 0:
-            # Small deficit, could be covered by battery (not in this option)
-            # For simplicity, we'll run generator at minimum load
+            # Small deficit, run generator at minimum load
             generator_on[i] = 1
             generator_output[i] = min_generator_load
             fuel_used[i] = (min_generator_load / generator_kw) * fuel_consumption_lph
@@ -344,21 +333,16 @@ def design_generator_only_option(df_load, daily_energy_kwh):
     generator_kw = generator_kva * 0.8
     
     # Fuel consumption
-    # Assume generator runs at 70% load on average
-    avg_load_factor = 0.7
-    avg_power_output = daily_energy_kwh / 24  # Average power over 24 hours
+    avg_power_output = daily_energy_kwh / 24
     load_factor = avg_power_output / generator_kw
     
-    # Fuel consumption curve: ~0.25 L/kWh at 50% load, ~0.3 L/kWh at 100% load
     base_fuel_rate = 0.25  # L/kWh at 50% load
-    fuel_rate = base_fuel_rate * (1 + 0.2 * (load_factor - 0.5))  # Linear approximation
+    fuel_rate = base_fuel_rate * (1 + 0.2 * (load_factor - 0.5))
     
     total_fuel_used = daily_energy_kwh * fuel_rate
     
     # Operation: runs 24/7 for reliability
     generator_runtime = 24
-    
-    # Reliability: 100% if fuel is available
     reliability = 100.0
     
     option3 = {
@@ -369,7 +353,7 @@ def design_generator_only_option(df_load, daily_energy_kwh):
         'fuel_rate_l_per_kwh': fuel_rate,
         'generator_runtime_hours': generator_runtime,
         'reliability_percent': reliability,
-        'operational_cost_per_kwh': fuel_rate * 900,  # Assuming ₦900/L diesel
+        'operational_cost_per_kwh': fuel_rate * 900,
         'df_balance': df_load.copy()
     }
     
@@ -383,18 +367,16 @@ def perform_economic_comparison(option1, option2, option3):
     """Compare economic viability of three options"""
     
     # Capital costs (approximate, for comparison)
-    # Note: These are NEW assumptions for this decision problem
-    
     cost_params = {
-        'solar_per_kw': 1200000,  # ₦/kW (including installation)
-        'battery_per_kwh': 450000,  # ₦/kWh (LiFePO4, installed)
-        'generator_per_kw': 300000,  # ₦/kW (diesel generator)
-        'balance_of_system_percent': 20,  # % of equipment cost
+        'solar_per_kw': 1200000,  # ₦/kW
+        'battery_per_kwh': 450000,  # ₦/kWh
+        'generator_per_kw': 300000,  # ₦/kW
+        'balance_of_system_percent': 20,
         'diesel_price': 900,  # ₦/liter
         'generator_maintenance': 50,  # ₦/operating hour
         'project_lifetime_years': 15,
         'discount_rate': 0.12,
-        'om_solar_percent': 1,  # % of capital cost per year
+        'om_solar_percent': 1,
         'om_battery_percent': 2,
         'om_generator_percent': 5
     }
@@ -410,10 +392,7 @@ def perform_economic_comparison(option1, option2, option3):
     om_solar1 = solar_cost * (cost_params['om_solar_percent'] / 100)
     om_battery1 = battery_cost * (cost_params['om_battery_percent'] / 100)
     annual_om1 = om_solar1 + om_battery1
-    
-    # Fuel cost: 0 for solar+battery
     annual_fuel1 = 0
-    
     total_annual_cost1 = annual_om1 + annual_fuel1
     
     # Option 2: Solar + Generator
@@ -423,18 +402,13 @@ def perform_economic_comparison(option1, option2, option3):
     bos_cost2 = equipment_cost2 * (cost_params['balance_of_system_percent'] / 100)
     total_capital2 = equipment_cost2 + bos_cost2
     
-    # Annual O&M
+    # Annual O&M and fuel
     om_solar2 = solar_cost2 * (cost_params['om_solar_percent'] / 100)
     om_generator2 = generator_cost2 * (cost_params['om_generator_percent'] / 100)
-    
-    # Fuel cost (daily operation)
     daily_fuel_cost2 = option2['total_fuel_used_l'] * cost_params['diesel_price']
     annual_fuel_cost2 = daily_fuel_cost2 * 365
-    
-    # Maintenance cost (based on runtime)
     daily_maintenance2 = option2['generator_runtime_hours'] * cost_params['generator_maintenance']
     annual_maintenance2 = daily_maintenance2 * 365
-    
     annual_om2 = om_solar2 + om_generator2 + annual_maintenance2
     total_annual_cost2 = annual_om2 + annual_fuel_cost2
     
@@ -443,30 +417,22 @@ def perform_economic_comparison(option1, option2, option3):
     bos_cost3 = generator_cost3 * (cost_params['balance_of_system_percent'] / 100)
     total_capital3 = generator_cost3 + bos_cost3
     
-    # Annual O&M
+    # Annual O&M and fuel
     om_generator3 = generator_cost3 * (cost_params['om_generator_percent'] / 100)
-    
-    # Fuel cost
     daily_fuel_cost3 = option3['daily_fuel_consumption_l'] * cost_params['diesel_price']
     annual_fuel_cost3 = daily_fuel_cost3 * 365
-    
-    # Maintenance cost (24/7 operation)
     daily_maintenance3 = 24 * cost_params['generator_maintenance']
     annual_maintenance3 = daily_maintenance3 * 365
-    
     annual_om3 = om_generator3 + annual_maintenance3
     total_annual_cost3 = annual_om3 + annual_fuel_cost3
     
     # Calculate Levelized Cost of Energy (LCOE)
-    # Simplified LCOE = (Annualized Capital + Annual O&M + Annual Fuel) / Annual Energy
-    
     annual_energy = 365 * (option1.get('df_balance', pd.DataFrame())['Total_MiniGrid_kW'].sum() 
-                          if 'df_balance' in option1 else 150)  # Approximate
+                          if 'df_balance' in option1 else 150)
     
-    # Annualize capital cost (using capital recovery factor)
     n = cost_params['project_lifetime_years']
     r = cost_params['discount_rate']
-    crf = r * (1 + r)**n / ((1 + r)**n - 1)  # Capital Recovery Factor
+    crf = r * (1 + r)**n / ((1 + r)**n - 1)
     
     annualized_capital1 = total_capital1 * crf
     annualized_capital2 = total_capital2 * crf
@@ -526,11 +492,11 @@ def perform_economic_comparison(option1, option2, option3):
     return economic_comparison
 
 # ============================================================================
-# 7. DECISION VISUALIZATION DASHBOARD
+# 7. CREATE FIRST IMAGE: CHARTS ONLY
 # ============================================================================
 
-def create_decision_dashboard(df_scaled, option1, option2, option3, economic_comparison):
-    """Create comprehensive decision dashboard"""
+def create_charts_figure(df_scaled, option1, option2, option3, economic_comparison):
+    """Create FIRST IMAGE with just charts"""
     
     plt.style.use('seaborn-v0_8-whitegrid')
     mpl.rcParams['font.size'] = 10
@@ -538,7 +504,7 @@ def create_decision_dashboard(df_scaled, option1, option2, option3, economic_com
     mpl.rcParams['figure.figsize'] = [16, 10]
     
     fig = plt.figure(constrained_layout=True)
-    gs = fig.add_gridspec(2, 3, hspace=0.25, wspace=0.25)
+    gs = fig.add_gridspec(2, 3, hspace=0.3, wspace=0.3)
     
     # 1. Mini-Grid Load Profile
     ax1 = fig.add_subplot(gs[0, 0])
@@ -557,7 +523,6 @@ def create_decision_dashboard(df_scaled, option1, option2, option3, economic_com
     ax1.grid(True, alpha=0.3)
     ax1.legend(loc='upper left', fontsize=9)
     
-    # Add daily energy annotation
     daily_energy = df_scaled['Total_MiniGrid_kW'].sum()
     ax1.annotate(f'Daily Energy: {daily_energy:.0f} kWh', 
                  xy=(12, df_scaled['Total_MiniGrid_kW'].max() * 0.8),
@@ -587,6 +552,13 @@ def create_decision_dashboard(df_scaled, option1, option2, option3, economic_com
     ax2.grid(True, alpha=0.3)
     ax2.legend(loc='upper left', fontsize=8)
     
+    ax2.annotate(f"Solar: {option1['solar_size_kw']:.0f} kW\nBattery: {option1['battery_capacity_kwh']:.0f} kWh", 
+                 xy=(18, ax2.get_ylim()[1] * 0.8),
+                 xytext=(14, ax2.get_ylim()[1] * 0.7),
+                 arrowprops=dict(arrowstyle='->', color='#3498DB'),
+                 fontsize=8, fontweight='bold',
+                 bbox=dict(boxstyle='round', facecolor='#F8F9F9', alpha=0.9))
+    
     # 3. Option 2: Solar + Generator Energy Balance
     ax3 = fig.add_subplot(gs[0, 2])
     
@@ -607,10 +579,17 @@ def create_decision_dashboard(df_scaled, option1, option2, option3, economic_com
     ax3.grid(True, alpha=0.3)
     ax3.legend(loc='upper left', fontsize=8)
     
+    ax3.annotate(f"Solar: {option2['solar_size_kw']:.0f} kW\nGenerator: {option2['generator_size_kw']:.0f} kW", 
+                 xy=(18, ax3.get_ylim()[1] * 0.8),
+                 xytext=(14, ax3.get_ylim()[1] * 0.7),
+                 arrowprops=dict(arrowstyle='->', color='#3498DB'),
+                 fontsize=8, fontweight='bold',
+                 bbox=dict(boxstyle='round', facecolor='#F8F9F9', alpha=0.9))
+    
     # 4. Economic Comparison: LCOE
     ax4 = fig.add_subplot(gs[1, 0])
     
-    options = ['Solar+Battery', 'Solar+Generator', 'Generator-Only']
+    options_names = ['Solar+Battery', 'Solar+Generator', 'Generator-Only']
     lcoe_values = [
         economic_comparison['option1']['lcoe_ngn_per_kwh'],
         economic_comparison['option2']['lcoe_ngn_per_kwh'],
@@ -618,7 +597,7 @@ def create_decision_dashboard(df_scaled, option1, option2, option3, economic_com
     ]
     colors = ['#2ECC71', '#F39C12', '#E74C3C']
     
-    bars4 = ax4.bar(options, lcoe_values, color=colors, alpha=0.8)
+    bars4 = ax4.bar(options_names, lcoe_values, color=colors, alpha=0.8)
     ax4.set_ylabel('Levelized Cost (₦/kWh)', fontweight='bold')
     ax4.set_title('Economic Comparison: Levelized Cost of Energy', fontweight='bold', pad=10)
     ax4.grid(True, alpha=0.3, axis='y')
@@ -628,7 +607,6 @@ def create_decision_dashboard(df_scaled, option1, option2, option3, economic_com
         ax4.text(bar.get_x() + bar.get_width()/2., height + 10,
                 f'₦{lcoe:.0f}', ha='center', va='bottom', fontweight='bold')
     
-    # Add grid tariff reference
     ax4.axhline(y=110, color='#3498DB', linestyle='--', linewidth=1.5, 
                 label='Grid Tariff (₦110/kWh)')
     ax4.legend(loc='upper right', fontsize=8)
@@ -642,7 +620,7 @@ def create_decision_dashboard(df_scaled, option1, option2, option3, economic_com
         economic_comparison['option3']['total_capital_ngn'] / 1e6
     ]
     
-    bars5 = ax5.bar(options, capital_costs, color=['#2ECC71', '#F39C12', '#E74C3C'])
+    bars5 = ax5.bar(options_names, capital_costs, color=['#2ECC71', '#F39C12', '#E74C3C'])
     ax5.set_ylabel('Capital Cost (₦ Millions)', fontweight='bold')
     ax5.set_title('Initial Investment Comparison', fontweight='bold', pad=10)
     ax5.grid(True, alpha=0.3, axis='y')
@@ -652,24 +630,73 @@ def create_decision_dashboard(df_scaled, option1, option2, option3, economic_com
         ax5.text(bar.get_x() + bar.get_width()/2., height + 0.5,
                 f'₦{cost:.1f}M', ha='center', va='bottom', fontweight='bold')
     
-    # 6. Decision Matrix & Recommendation
+    # 6. Reliability Comparison
     ax6 = fig.add_subplot(gs[1, 2])
-    ax6.axis('off')
+    
+    reliability_values = [
+        option1['reliability_percent'],
+        option2['reliability_percent'],
+        option3['reliability_percent']
+    ]
+    
+    bars6 = ax6.bar(options_names, reliability_values, color=['#2ECC71', '#F39C12', '#E74C3C'])
+    ax6.set_ylabel('Reliability (%)', fontweight='bold')
+    ax6.set_title('System Reliability Comparison', fontweight='bold', pad=10)
+    ax6.set_ylim([90, 102])
+    ax6.grid(True, alpha=0.3, axis='y')
+    
+    for i, (bar, reliability) in enumerate(zip(bars6, reliability_values)):
+        height = bar.get_height()
+        ax6.text(bar.get_x() + bar.get_width()/2., height + 0.5,
+                f'{reliability:.1f}%', ha='center', va='bottom', fontweight='bold')
+    
+    ax6.axhline(y=95, color='#E74C3C', linestyle='--', linewidth=1.5, 
+                label='Minimum Target (95%)')
+    ax6.legend(loc='upper right', fontsize=8)
+    
+    fig.suptitle('Mini-Grid Design Analysis: Technical & Economic Charts\n20 Household Rural Community - Northern Nigeria', 
+                fontsize=14, fontweight='bold', y=1.02)
+    
+    plt.savefig('mini_grid_charts_only.png', dpi=300, bbox_inches='tight', facecolor='white')
+    plt.show()
+    
+    return fig
+
+# ============================================================================
+# 8. CREATE SECOND IMAGE: DECISION ANALYSIS SUMMARY
+# ============================================================================
+
+def create_decision_summary_figure(df_scaled, option1, option2, option3, economic_comparison):
+    """Create SECOND IMAGE with decision analysis summary"""
+    
+    plt.style.use('seaborn-v0_8-whitegrid')
+    mpl.rcParams['font.size'] = 10
+    
+    fig = plt.figure(figsize=[14, 10])
     
     # Calculate scores for each option
     reliability_scores = [option1['reliability_percent'], 
                          option2['reliability_percent'], 
                          option3['reliability_percent']]
     
-    lcoe_scores = lcoe_values
-    capital_scores = capital_costs
+    lcoe_scores = [
+        economic_comparison['option1']['lcoe_ngn_per_kwh'],
+        economic_comparison['option2']['lcoe_ngn_per_kwh'],
+        economic_comparison['option3']['lcoe_ngn_per_kwh']
+    ]
+    
+    capital_costs = [
+        economic_comparison['option1']['total_capital_ngn'] / 1e6,
+        economic_comparison['option2']['total_capital_ngn'] / 1e6,
+        economic_comparison['option3']['total_capital_ngn'] / 1e6
+    ]
     
     # Normalize scores (higher is better, except for cost)
-    reliability_norm = [s/100 for s in reliability_scores]  # Already percentage
-    lcoe_norm = [1 - (l/max(lcoe_scores)) for l in lcoe_scores]  # Invert cost
-    capital_norm = [1 - (c/max(capital_scores)) for c in capital_scores]
+    reliability_norm = [s/100 for s in reliability_scores]
+    lcoe_norm = [1 - (l/max(lcoe_scores)) for l in lcoe_scores]
+    capital_norm = [1 - (c/max(capital_costs)) for c in capital_costs]
     
-    # Weighted scoring (customize weights based on priorities)
+    # Weighted scoring
     weights = {'reliability': 0.4, 'cost': 0.4, 'capital': 0.2}
     
     total_scores = []
@@ -680,117 +707,240 @@ def create_decision_dashboard(df_scaled, option1, option2, option3, economic_com
         total_scores.append(score)
     
     best_option_idx = np.argmax(total_scores)
-    best_option = options[best_option_idx]
+    options_names = ['Solar + Battery', 'Solar + Generator', 'Generator-Only']
+    best_option = options_names[best_option_idx]
     
+    # Decision Summary Text
     decision_text = f"""
-DECISION ANALYSIS SUMMARY
+MINI-GRID DESIGN DECISION ANALYSIS SUMMARY
+{'='*80}
 
-CRITERIA & WEIGHTS:
-Reliability: 40%
-Operating Cost (LCOE): 40%
-Capital Cost: 20%
+DECISION QUESTION:
+What is the optimal generation mix for a 20-household rural 
+mini-grid in Northern Nigeria to meet energy demands reliably at lowest cost?
 
-OPTION SCORES:
-1. Solar + Battery:
-   • Reliability: {option1['reliability_percent']:.1f}%
-   • LCOE: ₦{economic_comparison['option1']['lcoe_ngn_per_kwh']:.0f}/kWh
-   • Capital: ₦{economic_comparison['option1']['total_capital_ngn']/1e6:.1f}M
-   • Score: {total_scores[0]:.2f}
+CONSTRAINTS:
+• Must serve 20 rural households with limited grid access
+• Must achieve >95% reliability target
+• Must be economically viable for community ownership
+• Must consider seasonal variations (dry vs rainy season)
 
-2. Solar + Generator:
-   • Reliability: {option2['reliability_percent']:.1f}%
-   • LCOE: ₦{economic_comparison['option2']['lcoe_ngn_per_kwh']:.0f}/kWh
-   • Capital: ₦{economic_comparison['option2']['total_capital_ngn']/1e6:.1f}M
-   • Score: {total_scores[1]:.2f}
+{'='*80}
 
-3. Generator-Only:
-   • Reliability: {option3['reliability_percent']:.1f}%
-   • LCOE: ₦{economic_comparison['option3']['lcoe_ngn_per_kwh']:.0f}/kWh
-   • Capital: ₦{economic_comparison['option3']['total_capital_ngn']/1e6:.1f}M
-   • Score: {total_scores[2]:.2f}
+SYSTEM DESIGN SPECIFICATIONS:
+
+1. LOAD PROFILE ANALYSIS:
+• Daily Energy Demand: {df_scaled['Total_MiniGrid_kW'].sum():.0f} kWh
+• Peak Demand: {df_scaled['Total_MiniGrid_kW'].max():.1f} kW
+• Household Load: {df_scaled['Load_kW_20homes'].sum():.0f} kWh/day
+• Community Load: {df_scaled['Community_kW'].sum():.0f} kWh/day
+
+2. GENERATION OPTIONS EVALUATED:
+
+OPTION 1: SOLAR + BATTERY (HIGH RENEWABLE)
+• Solar PV: {option1['solar_size_kw']:.0f} kW
+• Battery Storage: {option1['battery_capacity_kwh']:.0f} kWh
+• Reliability: {option1['reliability_percent']:.1f}%
+• Solar Penetration: {option1.get('solar_penetration_percent', 0):.1f}%
+• LCOE: ₦{economic_comparison['option1']['lcoe_ngn_per_kwh']:.0f}/kWh
+• Capital Cost: ₦{economic_comparison['option1']['total_capital_ngn']/1e6:.1f}M
+
+OPTION 2: SOLAR + GENERATOR (HYBRID)
+• Solar PV: {option2['solar_size_kw']:.0f} kW
+• Generator: {option2['generator_size_kw']:.0f} kW
+• Daily Fuel Use: {option2['total_fuel_used_l']:.1f} L
+• Reliability: {option2['reliability_percent']:.1f}%
+• Solar Penetration: {option2.get('solar_penetration_percent', 0):.1f}%
+• LCOE: ₦{economic_comparison['option2']['lcoe_ngn_per_kwh']:.0f}/kWh
+• Capital Cost: ₦{economic_comparison['option2']['total_capital_ngn']/1e6:.1f}M
+
+OPTION 3: GENERATOR-ONLY (BASELINE)
+• Generator: {option3['generator_size_kw']:.0f} kW
+• Daily Fuel Use: {option3['daily_fuel_consumption_l']:.1f} L
+• Reliability: {option3['reliability_percent']:.1f}%
+• Fuel Rate: {option3['fuel_rate_l_per_kwh']:.3f} L/kWh
+• LCOE: ₦{economic_comparison['option3']['lcoe_ngn_per_kwh']:.0f}/kWh
+• Capital Cost: ₦{economic_comparison['option3']['total_capital_ngn']/1e6:.1f}M
+
+{'='*80}
+
+DECISION FRAMEWORK & SCORING:
+CRITERIA                WEIGHT    SOLAR+BATTERY   SOLAR+GENERATOR   GENERATOR-ONLY
+Reliability (>95%)      40%       {reliability_norm[0]:.2f}          {reliability_norm[1]:.2f}             {reliability_norm[2]:.2f}
+Operating Cost (LCOE)   40%       {lcoe_norm[0]:.2f}          {lcoe_norm[1]:.2f}             {lcoe_norm[2]:.2f}
+Capital Cost            20%       {capital_norm[0]:.2f}          {capital_norm[1]:.2f}             {capital_norm[2]:.2f}
+TOTAL SCORE:           100%       {total_scores[0]:.2f}          {total_scores[1]:.2f}             {total_scores[2]:.2f}
+
+{'='*80}
 
 RECOMMENDATION:
-{best_option.upper()} is recommended.
+{best_option.upper()} is RECOMMENDED for this application.
 
 RATIONALE:
-{get_recommendation_rationale(best_option_idx, option1, option2, option3, economic_comparison)}
+{get_recommendation_rationale(best_option_idx)}
+
+{'='*80}
 
 RISK ASSESSMENT:
 {get_risk_assessment(best_option_idx)}
 
-IMPLEMENTATION NEXT STEPS:
-1. Detailed engineering design
-2. Community engagement and tariff setting
-3. Financing arrangement
-4. Procurement and installation
-5. Operations training
+MITIGATION STRATEGIES:
+{get_mitigation_strategies(best_option_idx)}
+
+{'='*80}
+
+IMPLEMENTATION ROADMAP:
+
+PHASE 1: PREPARATION (Months 1-3)
+• Community engagement and ownership structure
+• Detailed site assessment and design finalization
+• Financing arrangement and tariff setting
+
+PHASE 2: IMPLEMENTATION (Months 4-8)
+• Procurement and logistics
+• Installation and commissioning
+• Training of local operators
+
+PHASE 3: OPERATIONS (Months 9-12)
+• System optimization and load growth monitoring
+• Community capacity building
+• Performance evaluation and reporting
 """
     
-    ax6.text(0.05, 0.95, decision_text, fontfamily='monospace', fontsize=8,
-             verticalalignment='top', linespacing=1.4,
-             bbox=dict(boxstyle='round', facecolor='#FEF9E7', alpha=0.9))
+    ax = fig.add_subplot(111)
+    ax.axis('off')
     
-    fig.suptitle('Mini-Grid Design Decision Analysis: 20 Household Rural Community\nEnergy System Management Portfolio - Day 8', 
-                fontsize=14, fontweight='bold', y=1.02)
+    ax.text(0.02, 0.98, decision_text, fontfamily='monospace', fontsize=8,
+            verticalalignment='top', linespacing=1.3,
+            bbox=dict(boxstyle='round', facecolor='#F8F9F9', alpha=0.9))
     
-    plt.savefig('mini_grid_design_decision.png', dpi=300, bbox_inches='tight', facecolor='white')
+    fig.suptitle('Mini-Grid Design Decision Analysis Summary\nEnergy System Management Portfolio - Day 8: System Design & Decision-Making', 
+                fontsize=14, fontweight='bold', y=0.98)
+    
+    plt.savefig('mini_grid_decision_summary.png', dpi=300, bbox_inches='tight', facecolor='white')
     plt.show()
-    
-    # Create additional technical specification sheet
-    create_technical_specifications(option1, option2, option3, economic_comparison, best_option_idx)
     
     return fig, best_option
 
-def get_recommendation_rationale(best_idx, option1, option2, option3, economic):
+def get_recommendation_rationale(best_idx):
     """Generate rationale for recommendation"""
     
     if best_idx == 0:  # Solar + Battery
-        return """• Highest reliability (>99%) with zero fuel dependency
-• Lowest operating cost after initial investment
-• Environmental benefits: zero emissions during operation
-• Best long-term solution as fuel prices increase
-• Suitable for remote locations with difficult fuel supply"""
+        return """• HIGHEST RELIABILITY (>99%) with zero fuel dependency - exceeds the >95% target
+• LOWEST OPERATING COST over project lifetime despite higher initial investment
+• ENVIRONMENTAL SUSTAINABILITY: Zero emissions operation aligns with climate goals
+• ENERGY SECURITY: Eliminates fuel supply chain risks in remote location
+• LONG-TERM COST SAVINGS: Immune to fuel price volatility
+• TECHNICAL MATURITY: Solar+battery systems proven in similar applications
+• COMMUNITY OWNERSHIP: Predictable costs enable sustainable tariff structure"""
     
     elif best_idx == 1:  # Solar + Generator
-        return """• Good balance of reliability and cost
-• Lower capital requirement than solar+battery
-• Generator provides backup during extended cloudy periods
-• Flexible operation: can run generator during peak demand
-• Lower risk than fully renewable system"""
+        return """• BALANCED APPROACH: Good reliability with lower capital than full renewable
+• FLEXIBLE OPERATION: Generator provides backup during extended cloudy periods
+• PROVEN TECHNOLOGY: Both components have established local maintenance capacity
+• GRADUAL TRANSITION: Can start with higher generator use, increase solar over time
+• COST-EFFECTIVE: Lower upfront cost while maintaining good reliability
+• RISK MITIGATION: Dual technology reduces single-point failure risk"""
     
     else:  # Generator-Only
-        return """• Lowest capital cost enables quick implementation
-• 100% reliability when fuel is available
-• Simple technology with local maintenance expertise
-• Can be upgraded to hybrid system later
-• Suitable for locations with reliable fuel supply"""
+        return """• LOWEST CAPITAL COST: Enables immediate implementation with limited funding
+• SIMPLE TECHNOLOGY: Widely understood with abundant local expertise
+• HIGH RELIABILITY: 100% when fuel is available
+• QUICK DEPLOYMENT: Can be operational within weeks
+• FLEXIBLE CAPACITY: Easy to adjust generator size as load grows
+• INTERIM SOLUTION: Can serve while planning renewable transition
+• SUBSIDY POTENTIAL: May qualify for government fuel subsidies"""
 
 def get_risk_assessment(best_idx):
     """Generate risk assessment for recommended option"""
     
     if best_idx == 0:
-        return """• High: Capital cost and financing availability
-• Medium: Battery lifespan and replacement cost
-• Low: Fuel price volatility (no fuel needed)
-• Medium: Seasonal solar variation requires proper sizing"""
+        return """HIGH RISK:
+• Capital financing availability and cost
+• Battery lifespan and replacement planning
+• Seasonal solar variation affecting dry vs rainy season performance
+
+MEDIUM RISK:
+• Local technical capacity for system maintenance
+• Theft or vandalism of solar equipment
+• Community willingness to pay for higher reliability
+
+LOW RISK:
+• Fuel price volatility (no fuel needed)
+• Environmental regulatory changes
+• Generator maintenance complexity"""
     
     elif best_idx == 1:
-        return """• Medium: Fuel price volatility affects operating cost
-• Medium: Generator maintenance and parts availability
-• Low: Solar component failure risk
-• Low: Overall system reliability"""
+        return """HIGH RISK:
+• Fuel price volatility affecting operating costs
+• Fuel supply chain reliability in remote location
+• Generator maintenance and spare parts availability
+
+MEDIUM RISK:
+• Seasonal solar variation
+• Optimal dispatch strategy implementation
+• Balance between fuel use and battery cycling
+
+LOW RISK:
+• Technology familiarity
+• Environmental compliance
+• Community acceptance"""
     
     else:
-        return """• High: Fuel price and availability volatility
-• High: Operating cost sensitivity to fuel prices
-• Medium: Generator maintenance requirements
-• High: Environmental and noise pollution"""
+        return """HIGH RISK:
+• Fuel price and availability volatility
+• Environmental pollution and community health impacts
+• Operating cost sensitivity to fuel price increases
+• Noise pollution affecting community acceptance
+
+MEDIUM RISK:
+• Generator maintenance requirements
+• Fuel theft or diversion
+• Carbon tax or environmental regulation changes
+
+LOW RISK:
+• Technology complexity
+• Initial capital requirements
+• Implementation timeline"""
+
+def get_mitigation_strategies(best_idx):
+    """Generate mitigation strategies for recommended option"""
+    
+    if best_idx == 0:
+        return """• FINANCING: Seek blended finance with grants, concessional loans, and community equity
+• BATTERY WARRANTY: Secure 8-10 year performance warranties from reputable manufacturers
+• SEASONAL DESIGN: Oversize solar by 20% to account for rainy season reduction
+• CAPACITY BUILDING: Invest in training local youth as system operators
+• COMMUNITY ENGAGEMENT: Establish mini-grid cooperative for ownership and governance
+• TARIFF DESIGN: Implement increasing block tariff to ensure affordability and sustainability"""
+    
+    elif best_idx == 1:
+        return """• FUEL HEDGING: Establish bulk fuel purchasing agreements or consider biofuel blends
+• PREVENTIVE MAINTENANCE: Implement rigorous maintenance schedule with local technicians
+• HYBRID OPTIMIZATION: Use smart controller to minimize fuel use while maintaining reliability
+• SOLAR EXPANSION: Design for future solar addition as costs decrease
+• FUEL SECURITY: Maintain minimum 2-week fuel reserve at site
+• COMMUNITY INVOLVEMENT: Train community members in basic generator maintenance"""
+    
+    else:
+        return """• FUEL MANAGEMENT: Establish transparent fuel procurement and monitoring system
+• MAINTENANCE FUND: Create sinking fund for generator overhaul and replacement
+• TRANSITION PLAN: Develop 3-5 year plan to integrate renewable components
+• EFFICIENCY MEASURES: Implement demand-side management and efficient appliances
+• ENVIRONMENTAL OFFSETS: Explore carbon credit opportunities
+• COMMUNITY EDUCATION: Raise awareness about fuel costs and energy conservation"""
+
+# ============================================================================
+# 9. TECHNICAL SPECIFICATIONS (BONUS THIRD IMAGE)
+# ============================================================================
 
 def create_technical_specifications(option1, option2, option3, economic, best_idx):
-    """Create detailed technical specification sheet"""
+    """Create detailed technical specification sheet (third image)"""
     
     fig, ax = plt.subplots(figsize=(12, 8))
     ax.axis('off')
+    
+    options_list = ['Solar + Battery', 'Solar + Generator', 'Generator-Only']
     
     if best_idx == 0:
         best_option = option1
@@ -884,55 +1034,36 @@ IMPLEMENTATION TIMELINE:
     plt.show()
 
 # ============================================================================
-# 8. MAIN DECISION EXECUTION
+# 10. MAIN FUNCTION FOR TWO IMAGES
 # ============================================================================
 
 def main():
-    """Execute mini-grid design decision analysis"""
+    """Main function to run the complete analysis and generate two images"""
     
     print("=" * 80)
-    print("DAY 8: MINI-GRID DESIGN DECISION ANALYSIS")
-    print("Energy System Management Portfolio - Week 2: System Design & Decision-Making")
+    print("DAY 8: MINI-GRID DESIGN DECISION ANALYSIS - TWO IMAGE VERSION")
     print("=" * 80)
-    
-    print("\nDECISION QUESTION:")
-    print("What is the optimal generation mix for a 20-household rural mini-grid")
-    print("in Northern Nigeria to meet energy demands reliably at lowest cost?")
     
     # Step 1: Define rural household profile
     print("\n1. DEFINING RURAL HOUSEHOLD LOAD PROFILE...")
     df_household, household_energy = define_rural_household_profile()
     print(f"   • Single household daily energy: {household_energy:.1f} kWh")
-    print(f"   • Peak demand: {df_household['Load_kW'].max():.2f} kW")
     
     # Step 2: Scale to mini-grid
     print("\n2. SCALING TO 20-HOUSEHOLD MINI-GRID...")
     df_minigrid, minigrid_energy = scale_to_20_households(df_household)
     print(f"   • Mini-grid daily energy: {minigrid_energy:.1f} kWh")
     print(f"   • Peak demand: {df_minigrid['Total_MiniGrid_kW'].max():.2f} kW")
-    print(f"   • Diversity factor applied: 0.75")
-    print(f"   • Community loads added: {df_minigrid['Community_kW'].sum():.1f} kWh/day")
     
     # Step 3: Design three options
     print("\n3. DESIGNING GENERATION OPTIONS...")
-    print("   • Option 1: Solar + Battery (High Renewable)")
     option1 = design_solar_battery_option(df_minigrid, minigrid_energy)
-    print(f"     - Solar: {option1['solar_size_kw']:.1f} kW")
-    print(f"     - Battery: {option1['battery_capacity_kwh']:.1f} kWh")
-    print(f"     - Reliability: {option1['reliability_percent']:.1f}%")
-    
-    print("\n   • Option 2: Solar + Generator (Hybrid)")
     option2 = design_solar_generator_option(df_minigrid, minigrid_energy)
-    print(f"     - Solar: {option2['solar_size_kw']:.1f} kW")
-    print(f"     - Generator: {option2['generator_size_kw']:.1f} kW")
-    print(f"     - Fuel consumption: {option2['total_fuel_used_l']:.1f} L/day")
-    print(f"     - Reliability: {option2['reliability_percent']:.1f}%")
-    
-    print("\n   • Option 3: Generator-Only (Baseline)")
     option3 = design_generator_only_option(df_minigrid, minigrid_energy)
-    print(f"     - Generator: {option3['generator_size_kw']:.1f} kW")
-    print(f"     - Fuel consumption: {option3['daily_fuel_consumption_l']:.1f} L/day")
-    print(f"     - Reliability: {option3['reliability_percent']:.1f}%")
+    
+    print(f"   • Option 1: Solar + Battery: {option1['solar_size_kw']:.1f} kW PV, {option1['battery_capacity_kwh']:.1f} kWh battery")
+    print(f"   • Option 2: Solar + Generator: {option2['solar_size_kw']:.1f} kW PV, {option2['generator_size_kw']:.1f} kW generator")
+    print(f"   • Option 3: Generator-Only: {option3['generator_size_kw']:.1f} kW generator")
     
     # Step 4: Economic comparison
     print("\n4. PERFORMING ECONOMIC COMPARISON...")
@@ -941,115 +1072,32 @@ def main():
     print(f"   • Option 1 LCOE: ₦{economic['option1']['lcoe_ngn_per_kwh']:.0f}/kWh")
     print(f"   • Option 2 LCOE: ₦{economic['option2']['lcoe_ngn_per_kwh']:.0f}/kWh")
     print(f"   • Option 3 LCOE: ₦{economic['option3']['lcoe_ngn_per_kwh']:.0f}/kWh")
-    print(f"   • Grid tariff reference: ₦110/kWh")
     
-    # Step 5: Create visualization and make decision
-    print("\n5. CREATING DECISION DASHBOARD...")
-    fig, recommendation = create_decision_dashboard(df_minigrid, option1, option2, option3, economic)
+    # Step 5: Create Image 1: Charts Only
+    print("\n5. CREATING IMAGE 1: TECHNICAL & ECONOMIC CHARTS...")
+    create_charts_figure(df_minigrid, option1, option2, option3, economic)
     
-    # Step 6: Present final decision
+    # Step 6: Create Image 2: Decision Analysis Summary
+    print("\n6. CREATING IMAGE 2: DECISION ANALYSIS SUMMARY...")
+    fig2, recommendation = create_decision_summary_figure(df_minigrid, option1, option2, option3, economic)
+    
+    # Step 7: Create Image 3: Technical Specifications
+    print("\n7. CREATING IMAGE 3: TECHNICAL SPECIFICATIONS...")
+    create_technical_specifications(option1, option2, option3, economic, 
+                                   ['Solar + Battery', 'Solar + Generator', 'Generator-Only'].index(recommendation))
+    
+    # Final output
     print("\n" + "=" * 80)
-    print("DECISION RECOMMENDATION")
+    print("ANALYSIS COMPLETE - THREE IMAGES GENERATED:")
     print("=" * 80)
-    
-    print(f"\nRECOMMENDED OPTION: {recommendation.upper()}")
-    
-    if recommendation == "Solar+Battery":
-        print("\nRATIONALE:")
-        print("• Highest reliability (>99%) with zero fuel dependency")
-        print("• Lowest operating cost despite higher capital investment")
-        print("• Environmental benefits align with sustainability goals")
-        print("• Reduced operational complexity compared to fuel-dependent systems")
-        print("• Future-proof as fuel prices continue to rise")
-        
-        print("\nSYSTEM SPECIFICATIONS:")
-        print(f"• Solar PV: {option1['solar_size_kw']:.1f} kW")
-        print(f"• Battery Storage: {option1['battery_capacity_kwh']:.1f} kWh")
-        print(f"• Daily Solar Generation: {option1['total_solar_gen_kwh']:.0f} kWh")
-        print(f"• System Reliability: {option1['reliability_percent']:.1f}%")
-        print(f"• Levelized Cost: ₦{economic['option1']['lcoe_ngn_per_kwh']:.0f}/kWh")
-        
-    elif recommendation == "Solar+Generator":
-        print("\nRATIONALE:")
-        print("• Balanced approach combining renewable energy with reliable backup")
-        print("• Lower capital requirement than solar+battery option")
-        print("• Generator provides assurance during extended cloudy periods")
-        print("• Flexible operation allows optimization of fuel use")
-        print("• Established technology with local maintenance expertise")
-        
-        print("\nSYSTEM SPECIFICATIONS:")
-        print(f"• Solar PV: {option2['solar_size_kw']:.1f} kW")
-        print(f"• Generator: {option2['generator_size_kw']:.1f} kW ({option2['generator_kva']:.0f} kVA)")
-        print(f"• Daily Fuel Consumption: {option2['total_fuel_used_l']:.1f} liters")
-        print(f"• Generator Runtime: {option2['generator_runtime_hours']:.1f} hours/day")
-        print(f"• System Reliability: {option2['reliability_percent']:.1f}%")
-        print(f"• Levelized Cost: ₦{economic['option2']['lcoe_ngn_per_kwh']:.0f}/kWh")
-        
-    else:  # Generator-Only
-        print("\nRATIONALE:")
-        print("• Lowest capital cost enables immediate implementation")
-        print("• 100% reliability when fuel supply is assured")
-        print("• Simple technology with widespread local expertise")
-        print("• Can serve as interim solution while planning renewable expansion")
-        print("• Operational costs may be acceptable if fuel subsidies exist")
-        
-        print("\nSYSTEM SPECIFICATIONS:")
-        print(f"• Generator: {option3['generator_size_kw']:.1f} kW ({option3['generator_kva']:.0f} kVA)")
-        print(f"• Daily Fuel Consumption: {option3['daily_fuel_consumption_l']:.1f} liters")
-        print(f"• Fuel Rate: {option3['fuel_rate_l_per_kwh']:.3f} L/kWh")
-        print(f"• Operating Cost: ₦{option3['operational_cost_per_kwh']:.0f}/kWh")
-        print(f"• System Reliability: {option3['reliability_percent']:.1f}%")
-        print(f"• Levelized Cost: ₦{economic['option3']['lcoe_ngn_per_kwh']:.0f}/kWh")
-    
-    print("\n" + "=" * 80)
-    print("DECISION-MAKING PROCESS SUMMARY")
-    print("=" * 80)
-    print("\n1. Problem Framing:")
-    print("   • Defined: 20 rural households in Northern Nigeria")
-    print("   • Constraint: >95% reliability requirement")
-    print("   • Objective: Minimize lifecycle cost")
-    
-    print("\n2. Alternatives Generation:")
-    print("   • Option 1: High-renewable (solar + battery)")
-    print("   • Option 2: Hybrid (solar + generator)")
-    print("   • Option 3: Conventional (generator-only)")
-    
-    print("\n3. Analysis Criteria:")
-    print("   • Technical: Reliability, energy balance, sizing adequacy")
-    print("   • Economic: Capital cost, operating cost, LCOE")
-    print("   • Operational: Fuel dependency, maintenance complexity")
-    
-    print("\n4. Decision Methodology:")
-    print("   • Quantitative: Energy modeling, financial analysis")
-    print("   • Qualitative: Risk assessment, implementation feasibility")
-    print("   • Weighted scoring across multiple criteria")
-    
-    print("\n5. Sensitivity Notes:")
-    print("   • Recommendation valid for current diesel price: ₦900/L")
-    print("   • Solar costs assumed: ₦1.2M/kW installed")
-    print("   • Battery costs assumed: ₦450k/kWh installed")
-    print("   • Recommendation may change with significant parameter shifts")
-    
-    print("\n" + "=" * 80)
-    print("PROJECT DELIVERABLES:")
-    print("=" * 80)
-    print("✓ mini_grid_design_decision.png - Main decision dashboard")
-    print("✓ mini_grid_technical_specifications.png - Detailed system specs")
-    print("✓ Complete analysis code with all calculations")
-    
-    print("\n" + "=" * 80)
-    print("PORTFOLIO VALUE STATEMENT:")
-    print("=" * 80)
-    print("'Conducted mini-grid design feasibility study comparing three generation")
-    print("options for rural electrification, recommending optimal solution based")
-    print("on technical reliability and economic viability analysis.'")
-    
-    print("\n" + "=" * 80)
-    print("DAY 8 COMPLETE")
+    print("1. mini_grid_charts_only.png - Technical & economic charts (6 charts)")
+    print("2. mini_grid_decision_summary.png - Decision analysis summary")
+    print("3. mini_grid_technical_specifications.png - Technical specifications")
+    print("\nRECOMMENDATION: " + recommendation.upper())
     print("=" * 80)
 
 # ============================================================================
-# EXECUTE ANALYSIS
+# RUN THE ANALYSIS
 # ============================================================================
 
 if __name__ == "__main__":

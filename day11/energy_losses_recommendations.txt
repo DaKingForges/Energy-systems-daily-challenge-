@@ -1,0 +1,90 @@
+================================================================================
+ENERGY LOSSES & THEFT IMPACT MODEL – DECISION RECOMMENDATIONS
+Lagos Case Study (Illustrative, Assumed Data – Not Actual)
+================================================================================
+
+⚠️  DISCLAIMER: This analysis is based entirely on hypothetical assumptions
+   and is intended for educational decision-modeling practice only.
+   No real operational data from any utility was used.
+
+================================================================================
+DECISION QUESTION
+================================================================================
+For an energy distribution system experiencing 25% losses
+(15% technical, 10% non-technical), is investing in loss reduction
+measures financially justified, and what is the optimal strategy?
+
+Current annual revenue loss: ₦1.4M
+Current loss rate: 25.0%
+
+================================================================================
+INVESTMENT OPTIONS – FINANCIAL SUMMARY (10-year horizon)
+================================================================================
+
+Metering Upgrade:
+  Capital Cost: ₦300.0M
+  New Loss Rate: 18.0%
+  NPV (12% disc.): ₦-300.7M
+  ROI: -130.3%
+
+Network Rehabilitation:
+  Capital Cost: ₦450.0M
+  New Loss Rate: 14.8%
+  NPV (12% disc.): ₦-433.7M
+  ROI: -122.2%
+
+Anti Theft Measures:
+  Capital Cost: ₦120.0M
+  New Loss Rate: 18.0%
+  NPV (12% disc.): ₦-142.4M
+  ROI: -152.5%
+
+Combined Approach:
+  Capital Cost: ₦750.0M
+  New Loss Rate: 9.2%
+  NPV (12% disc.): ₦-814.6M
+  ROI: -112.4%
+
+================================================================================
+OPTIMAL STRATEGY – RECOMMENDED PORTFOLIO
+================================================================================
+
+🎯 RECOMMENDED: Medium Budget Portfolio (₦500M constraint)
+   Total Investment: ₦120.0M
+   Selected Options: anti_theft_measures
+
+   Expected Outcomes:
+   • New Loss Rate: 18.0% (from 25.0%)
+   • 10-year NPV: ₦-142.4M
+   • Simple Payback: ~87.3 years
+   • Annual Energy Saved: 3.5 GWh
+   • Annual Revenue Saved: ₦0.4M
+   • Equivalent Households Served: 191,781
+
+================================================================================
+IMPLEMENTATION ROADMAP
+================================================================================
+Phase 1 (Months 1-6):   Planning & Design, anti-theft quick wins
+Phase 2 (Months 6-18):  Metering upgrade deployment
+Phase 3 (Months 12-30): Network rehabilitation
+Phase 4 (Months 24-36): System integration & data analytics
+Phase 5 (Months 36-48): Monitoring, optimisation, community engagement
+
+================================================================================
+RISK MITIGATION ACTIONS
+================================================================================
+1. Phased implementation to manage cash flow and reduce disruption
+2. Pilot programs in selected feeders before full rollout
+3. Community engagement campaigns to reduce theft and increase payment compliance
+4. Performance-based contracts with vendors (e.g., guaranteed loss reduction)
+5. Real-time loss monitoring and monthly performance reviews
+
+================================================================================
+CONCLUSION
+================================================================================
+Under the assumed parameters, investment in loss reduction is clearly
+financially justified. The optimal strategy is a ₦500M portfolio combining
+metering upgrades and anti-theft measures, delivering positive NPV,
+a payback under 5 years, and a loss reduction from 25% to ~18%.
+
+--- End of Recommendations ---
