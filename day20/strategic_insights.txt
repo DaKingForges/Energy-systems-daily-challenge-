@@ -1,0 +1,42 @@
+
+STRATEGIC INSIGHTS REPORT – ENERGY SYSTEM FUTURES (2050)
+========================================================
+
+Baseline (2025):
+- Annual demand: 14.6 GWh
+- Dominant sources: grid imports, diesel, some solar.
+- Emissions: 46.6 ktCO2/yr
+
+Scenario Comparison (2050):
+                        Scenario  Demand_GWh  Renewable_share  Avg_Cost_$_per_MWh  Emissions_ktCO2
+          A: Renewable Dominance       51.95             85.0            18000.54             3.74
+            B: Fossil Resilience       30.95             30.0            10227.11            10.40
+C: Electrification & Flexibility       55.45             75.0            18973.07             6.65
+
+Key Findings:
+-------------
+1. **Scenario A (Renewable Dominance)** achieves 85% renewables with moderate cost ($18001/MWh) and near-zero emissions. Requires massive storage (59307 MWh) and strong policy support (carbon tax). Resilient to fuel shocks but vulnerable to weather.
+
+2. **Scenario B (Fossil Resilience)** maintains low upfront cost but high fuel price exposure and emissions (10.4 ktCO2). High risk from fuel shocks (likelihood 5, impact 5).
+
+3. **Scenario C (Electrification & Flexibility)** leverages EVs and smart DR to reduce peak and integrate renewables (75%). Highest storage (84403 MWh) and cost ($18973/MWh) but offers demand-side flexibility and V2G backup. Technology failure risk is elevated due to complexity.
+
+Resilience Assessment:
+- Most resilient to fuel shocks: A and C (low fossil dependence).
+- Most resilient to extreme weather: B (dispatchable fossil), but A and C can be hardened with distributed storage.
+- Most affordable: B, but at high environmental cost.
+- Lowest transition risk: A (policy-driven, technology mature).
+
+Strategic Recommendations:
+--------------------------
+1. **Begin investing now in renewable and storage cost reduction** – all scenarios benefit.
+2. **Pilot V2G and smart charging** to prepare for high EV penetration (Scenario C).
+3. **Diversify storage portfolio** – combine battery (fast response) with PHS (long duration) to hedge technology failure and weather risks.
+4. **Implement carbon pricing gradually** to make Scenario A economically viable without shock.
+5. **Strengthen grid and distribution infrastructure** to handle bidirectional flows and increased electrification.
+
+Pumped Hydro Storage (PHS) plays a critical role in long-duration storage, especially in Scenarios A and C. Its low cost per kWh and long life make it ideal for seasonal shifts and multi-day backup.
+
+Conclusion:
+-----------
+The future is not predetermined. By understanding these three distinct pathways, investors and policymakers can make robust decisions that perform well across multiple futures. The most balanced approach combines elements of A and C: aggressive renewables, diversified storage, and smart demand-side participation.

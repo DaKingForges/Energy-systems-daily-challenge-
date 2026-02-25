@@ -1,0 +1,49 @@
+
+PEAK SHAVING & DEMAND RESPONSE SIMULATION - RECOMMENDATIONS
+============================================================
+
+Community: Commercial building (representative profile)
+Tariff: ₦60/kWh energy, ₦8,000/kW demand charge (monthly)
+
+ORIGINAL METRICS:
+-----------------
+Peak demand: 633.2 kW
+Load factor: 0.423
+Monthly energy: 179947 kWh (extrapolated)
+Monthly demand cost: ₦20,261,529
+Monthly total cost: ₦31,058,376
+
+STRATEGY COMPARISON (WEEKLY):
+-----------------------------
+   Scenario  Peak (kW)  Load Factor  Energy Cost (₦)  Demand Cost (₦)  Total Cost (₦)  Savings (₦)
+      No DR      633.2        0.423        2699212.0        5065382.0       7764594.0          0.0
+Curtailment      560.7        0.461        2607575.0        4485323.0       7092898.0     671696.0
+    Battery      633.2        0.423        2698856.0        5065382.0       7764238.0        355.0
+
+KEY FINDINGS:
+-------------
+- Curtailment reduces peak by 72.5 kW (11.5%) with no capital cost.
+- Battery reduces peak by 0.0 kW (0.0%) but requires investment.
+- Both strategies improve load factor (curtailment: 0.461, battery: 0.423).
+
+RECOMMENDATION:
+---------------
+- **Immediate, low-cost action:** Implement load curtailment during the top 3 peak hours each day. Expected savings: ₦671,696 per week (₦34,928,181 annually). No investment needed, but may affect occupant comfort if HVAC is curtailed.
+- **For longer-term, greater savings:** Consider a battery system of ~79 kWh. At current costs (₦450,000/kWh), CAPEX ≈ ₦35,756,563. Weekly savings of ₦355 → annual ₦18,483 → simple payback ~1934.6 years. Battery also provides backup during outages.
+- **Hybrid approach:** Combine curtailment with a smaller battery to further reduce peak and improve ROI.
+
+PRACTICAL CONSTRAINTS:
+----------------------
+- Curtailment: HVAC reduction may affect thermal comfort; industrial process shifting may require production schedule changes.
+- Battery: Requires space, maintenance, and has degradation (10‑15 year life). Response time is excellent for grid services.
+- Both strategies are feasible with existing building automation systems.
+
+NEXT STEPS:
+-----------
+1. Conduct detailed energy audit to identify exact curtailable loads.
+2. Obtain quotes for battery storage and evaluate financing options (PPA, leasing).
+3. Explore utility demand response programs for additional revenue.
+
+PORTFOLIO VALUE STATEMENT:
+--------------------------
+'Simulated demand response and battery-based peak shaving for a commercial building load profile using realistic tariff structures. Quantified weekly savings of up to ₦355 (₦18,483 annually) with curtailment and battery options. Provided techno-economic comparison and actionable recommendations for facility managers.'

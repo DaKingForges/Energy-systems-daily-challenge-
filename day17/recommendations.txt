@@ -1,0 +1,46 @@
+
+FUEL PRICE SHOCK SIMULATION - RESILIENCE REPORT
+================================================
+
+SYSTEM: Representative national grid with gas-dominated generation.
+SHOCK: Natural gas price increase of 150% (e.g., 2022 global gas crisis).
+
+KEY IMPACTS:
+------------
+- Total daily generation cost increased by 87.7%.
+- Average cost rose from ₦45,626/MWh to ₦85,642/MWh.
+- Peak marginal cost climbed to ₦237,500/MWh.
+- Emissions: 33380.1 tonnes CO2/day.
+
+MITIGATION EFFECTIVENESS:
+-------------------------
+1. **Battery Storage (200 MW / 800 MWh):**
+   - Reduced cost by 1.6% vs shocked.
+   - Shifts cheap solar energy to peak hours, displacing expensive gas and diesel.
+   - Estimated annual savings: ₦37,623,809,365.
+   - Payback period (rough): 0.0 years at ₦450k/kWh.
+
+2. **Demand Response (10% peak reduction):**
+   - Reduced cost by 9.0% vs shocked.
+   - Minimal capital cost; requires customer engagement programs.
+   - Avoided cost: ₦581,953,846 per day.
+
+COMPARISON METRICS:
+-------------------
+          Scenario  Total Cost (₦ million)  Avg Cost (₦/MWh)  Peak Marginal Cost (₦/MWh)  Emissions (tonnes CO2)
+          Baseline                 3457.08          45626.37                      120000                31571.98
+ Gas Shock (+150%)                 6489.07          85642.49                      237500                33380.08
+Battery Mitigation                 6385.99          84282.05                      237500                33512.31
+     DR Mitigation                 5907.11          80770.39                      237500                32274.08
+
+RECOMMENDATION:
+---------------
+- **Immediate:** Implement demand response programs targeting large industrial customers to shave the most expensive peak hours.
+- **Medium-term:** Procure battery storage (200 MW / 800 MWh) to provide daily peak shaving and enhance grid flexibility. The battery alone can reduce the cost impact of future gas shocks by ~1.6%.
+- **Long-term:** Diversify the generation mix with additional renewables (solar, wind) to reduce dependency on imported gas. Accelerate coal phase-out if emissions reduction is a priority.
+
+The system remains vulnerable to fuel price volatility due to gas dependency. Strategic investments in storage and demand-side management significantly improve resilience and reduce exposure to fuel price shocks.
+
+PORTFOLIO VALUE STATEMENT:
+--------------------------
+'Simulated a realistic gas price shock (+150%) on a national power system, quantifying cost and dispatch impacts. Designed and evaluated battery storage and demand response mitigation, demonstrating cost reductions of 1.6% and 9.0% respectively. Provided actionable recommendations for enhancing system resilience.'

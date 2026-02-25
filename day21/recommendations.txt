@@ -1,0 +1,69 @@
+
+SMALL HYDROPOWER FEASIBILITY SUMMARY – Ogbomosho River Tributary
+======================================================
+
+Site: Oyo State, Nigeria
+Head: 25 m
+Average flow: 4.50 m³/s
+
+TECHNICAL SUMMARY
+-----------------
+- Installed capacity (net): 884.8 kW
+- Annual energy: 7.78 GWh
+- Capacity factor: 1.003
+- Turbine type: Francis (justified by head range)
+
+ECONOMIC SUMMARY
+----------------
+- CAPEX: ₦3,317,931,302 ($2,211,954)
+- LCOE: ₦44/kWh
+- Comparison:
+  • Diesel: ₦485/kWh
+  • Solar+battery: ₦187/kWh
+  • Small hydro is cheaper than diesel,
+    and cheaper than solar+battery.
+
+SEASONALITY
+-----------
+- Wet season (Jun–Oct): power up to 1572.9 kW
+- Dry season (Nov–May): power as low as 393.2 kW
+- This variability suggests either:
+  (a) Accept lower dry season output and use backup,
+  (b) Add storage (small reservoir or battery) to shift wet season excess,
+  (c) Hybridise with solar PV to complement dry season (sunny) periods.
+
+RECOMMENDATION
+--------------
+1. **Immediate next step**: Conduct detailed flow measurements for at least one full year
+   to confirm seasonal pattern. If actual dry season flow is significantly lower,
+   project economics may worsen.
+
+2. **Design choice**: A run-of-river scheme with a small weir (no large reservoir) is
+   recommended to minimise environmental impact and cost. This will limit dry season output
+   but avoids displacement.
+
+3. **Hybridisation**: Pair with solar PV (e.g., 50 kWp) to supplement dry season generation.
+   The solar profile complements hydro: solar produces more in dry (sunny) season when
+   hydro is low. This could improve reliability and reduce battery needs.
+
+4. **Grid connection**: Assess distance to nearest distribution line. If >5 km, factor in
+   transmission cost (approx. $20,000/km) into CAPEX.
+
+5. **Community engagement**: Early consultation with downstream communities regarding
+   water access and ecological flow is essential.
+
+6. **Funding**: Explore rural electrification grants (e.g., REA in Nigeria) that may cover
+   part of the capital cost, improving LCOE.
+
+CONCLUSION
+----------
+The site shows promising technical potential with competitive LCOE compared to diesel.
+Seasonal variation is the main challenge, but hybridisation with solar can mitigate this.
+A detailed feasibility study (hydrological, geotechnical, environmental) is warranted.
+
+PORTFOLIO STATEMENT
+-------------------
+'Conducted a small hydropower resource assessment using realistic hydrological data,
+calculated technical generation potential, selected appropriate turbine technology,
+and evaluated economic and environmental feasibility, recommending hybridisation with
+solar to address seasonal variability.'

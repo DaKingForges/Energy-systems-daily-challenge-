@@ -1,0 +1,38 @@
+
+COMMUNITY ENERGY DASHBOARD – USER GUIDE
+========================================
+
+This dashboard provides real-time and historical insights for a microgrid serving
+100 households plus community loads (clinic, school, market). The system includes:
+- 500 kWp solar PV
+- 300 kW diesel generator (backup)
+- 400 kWh battery (usable)
+- Grid connection (optional import/export)
+
+Data is simulated at hourly resolution for 7 days but can be replaced with real data.
+
+Dashboard Panels:
+1. Real-Time Status: Current load, solar, diesel, grid flow, battery SOC, with traffic light indicators.
+2. Energy Mix: Last 24h generation breakdown (pie chart).
+3. Peak & Cost: Daily peak, load factor, energy consumed, estimated cost, and demand charge.
+4. Reliability: Hours of autonomy, outage risk, generator runtime, energy not supplied (ENS).
+5. Load vs Generation: Last 48h time series of load, solar, diesel, grid, battery discharge.
+6. Battery SOC: Full history.
+7. Cost Accumulation: Cumulative energy cost over the period.
+8. Emissions Trend: Daily actual emissions and solar offset.
+
+Automated Insights (in insights.txt) provide actionable alerts:
+- Battery depletion warnings
+- Peak demand changes
+- Diesel usage trends
+- Renewable fraction
+- Outage risk
+- Emissions saved
+
+How this helps operators:
+- Quickly identify if the system is under stress.
+- Plan maintenance or load shifting based on trends.
+- Monitor cost and environmental performance.
+- Receive early warnings before outages occur.
+
+Data Source: Simulated using Day 15 microgrid parameters with realistic variability.

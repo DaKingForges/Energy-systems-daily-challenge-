@@ -1,0 +1,4 @@
+Scenario,Demand_GWh,Solar_MW,Wind_MW,Gas_MW,Diesel_MW,Battery_MWh,PHS_MWh,Renewable_share,Total_CAPEX_$M,Annual_OM_$M,Fuel_Cost_$M,Carbon_Tax_$M,Total_Annual_Cost_$M,Avg_Cost_$_per_MWh,Emissions_ktCO2
+A: Renewable Dominance,51.95,17.64,5.04,0.84,0.59,41514.83,17792.07,85.0,7669.2,153.38,0.48,0.19,935.18,18000.54,3.74
+B: Fossil Resilience,30.95,3.71,1.06,2.33,1.65,8244.67,3533.43,30.0,2586.86,51.74,1.34,0.0,316.56,10227.11,10.4
+C: Electrification & Flexibility,55.45,16.62,4.75,1.49,1.06,59082.18,25320.93,75.0,8625.08,172.5,0.86,0.27,1052.11,18973.07,6.65
